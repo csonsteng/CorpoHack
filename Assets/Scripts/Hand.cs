@@ -25,6 +25,8 @@ public class Hand : MonoBehaviour
 
     private float _maxHandWidth;
 
+    private bool _dragging;
+
     private void Start()
     {
         _cardTemplate.gameObject.SetActive(false);
@@ -50,7 +52,7 @@ public class Hand : MonoBehaviour
         var card = Instantiate(_cardTemplate, transform);
         card.gameObject.SetActive(true);
         card.transform.localPosition = _deckLocation.localPosition;
-        card.Register(CardHovered, CardUnhovered);
+        card.Register(this);
         card.TweenScale(_cardScaleSize.x, 0f);
         _cards.Add(card);
         Resize();
@@ -66,16 +68,24 @@ public class Hand : MonoBehaviour
         _hovered = null;
 	}
 
-    private void CardHovered(Card card)
+    public void CardHovered(Card card)
 	{
+        if (_dragging)
+        {
+            return;
+        }
         _hovered = card;
         card.TweenScale(_cardScaleSize.y, _animationDuration);
         Resize();
 	}
 
-    private void CardUnhovered(Card card)
+    public void CardUnhovered(Card card)
     {
-        if(_hovered == card)
+        if (_dragging)
+        {
+            return;
+        }
+        if (_hovered == card)
 		{
             _hovered = null;
             card.TweenScale(_cardScaleSize.x, _animationDuration);
@@ -83,9 +93,21 @@ public class Hand : MonoBehaviour
         }
     }
 
+    public void CardDragged(Card card)
+	{
+        _dragging = true;
+	}
+    public void CardDropped(Card card)
+    {
+        _dragging = false;
+    }
+
     private void Resize()
 	{
-
+		if (_dragging)
+		{
+            return;
+		}
         var n = _cards.Count;
         var minCardSize = _cardTemplate.BaseWidth * _cardScaleSize.x;
         var maxCardSize = _cardTemplate.BaseWidth * _cardScaleSize.y;
@@ -142,9 +164,16 @@ public class Hand : MonoBehaviour
             } else
 			{
                 // todo: accumulate yPosition 
-                var angle = (((n - 1) / 2f) - i) * rotatePerCard;
-                yPosition = -width * Mathf.Sin(Mathf.Deg2Rad * Mathf.Abs(angle));
-                card.TweenRotation(angle, _animationDuration);
+                var positionFromMiddle = Mathf.CeilToInt(Mathf.Abs(i - (n - 1) / 2f));
+                yPosition = 0f;
+                var angle = 0f;
+                for (var j = 1; j <= positionFromMiddle; j++)
+				{
+                    angle = j * rotatePerCard;
+                    yPosition -= width * Mathf.Sin(Mathf.Deg2Rad * angle);
+
+                }
+                card.TweenRotation(-Mathf.Sign(i - (n - 1) / 2f) * angle, _animationDuration);
             }
             var xPosition = lastXPosition;
             if(i == 0)

@@ -7,29 +7,50 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
 	[SerializeField] private Vector3 _baseScale;
-	private Action<Card> _onHoverEnter;
-	private Action<Card> _onHoverExit;
+	private Hand _hand;
 
 	private Tween _scaleTween;
 	private Tween _positionTween;
 	private Tween _rotationTween;
 
+	private Vector3 _mouseOffset;
+	private Vector3 _dragStartPosition;
+
 	public float BaseWidth => _baseScale.x;
 	public float CardThickness => _baseScale.z;
 
-	public void Register(Action<Card> onHoverEnter, Action<Card> onHoverExit)
+	public void Register(Hand hand)
 	{
-		_onHoverEnter = onHoverEnter;
-		_onHoverExit = onHoverExit;
+		_hand = hand;
 	}
 
 	private void OnMouseEnter()
 	{
-		_onHoverEnter?.Invoke(this);
+		_hand.CardHovered(this);
 	}
 	private void OnMouseExit()
 	{
-		_onHoverExit?.Invoke(this);
+		_hand.CardUnhovered(this);
+	}
+
+	private void OnMouseDown()
+	{
+		var screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+		_mouseOffset = screenPosition - Input.mousePosition;
+		_dragStartPosition = transform.position;
+		_hand.CardDragged(this);
+	}
+
+	private void OnMouseDrag()
+	{
+		transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + _mouseOffset);
+
+	}
+
+	private void OnMouseUp()
+	{
+		_hand.CardDropped(this);
+		transform.position = _dragStartPosition;
 	}
 
 	public void TweenScale(float scale, float duration)

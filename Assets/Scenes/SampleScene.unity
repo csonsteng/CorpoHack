@@ -647,12 +647,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f6797b249fb0e64a8584c50fc9a21ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handSize: 5
+  _handSize: 1
   _cardTemplate: {fileID: 1674575898}
   _cardScaleSize: {x: 1, y: 1.5}
   _animationDuration: 0.1
-  _maxRotation: 20
-  _hoverYLocation: 1.15
+  _maxRotation: 15
+  _hoverYLocation: 0.65
   _maxHandSpacing: 0.1
   _minHandPosition: {fileID: 1272097164}
   _maxHandPosition: {fileID: 1068813800}
@@ -666,7 +666,7 @@ Transform:
   m_GameObject: {fileID: 1994836174}
   serializedVersion: 2
   m_LocalRotation: {x: 0.01745245, y: 0, z: 0, w: 0.99984777}
-  m_LocalPosition: {x: 0, y: -3.5, z: -2.89}
+  m_LocalPosition: {x: 0, y: -3, z: -2.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
