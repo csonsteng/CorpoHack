@@ -12,6 +12,10 @@ public class Card : MonoBehaviour
 
 	private Tween _scaleTween;
 	private Tween _positionTween;
+	private Tween _rotationTween;
+
+	public float BaseWidth => _baseScale.x;
+	public float CardThickness => _baseScale.z;
 
 	public void Register(Action<Card> onHoverEnter, Action<Card> onHoverExit)
 	{
@@ -44,6 +48,15 @@ public class Card : MonoBehaviour
 			_positionTween.Kill();
 		}
 
-		_positionTween = transform.DOMove(position, duration);
+		_positionTween = transform.DOLocalMove(position, duration);
+	}
+	public void TweenRotation(float rotation, float duration)
+	{
+		if (_rotationTween.IsActive())
+		{
+			_rotationTween.Kill();
+		}
+
+		_rotationTween = transform.DOLocalRotate(new Vector3(0f, 0f, rotation), duration);
 	}
 }
