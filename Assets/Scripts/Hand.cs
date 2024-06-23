@@ -5,9 +5,8 @@ using Sirenix.OdinInspector;
 using DG.Tweening;
 using System.Threading.Tasks;
 
-public class Hand : MonoBehaviour
+public class Hand : AbstractCardManagerComponent
 {
-    [SerializeField] private int _handSize;
     [SerializeField] private Card _cardTemplate;
     [SerializeField] private Vector2 _cardScaleSize;
     [SerializeField] private float _animationDuration = 0.1f;
@@ -18,7 +17,6 @@ public class Hand : MonoBehaviour
 
     [SerializeField] Transform _minHandPosition;
     [SerializeField] Transform _maxHandPosition;
-    [SerializeField] Transform _deckLocation;
 
     private Card _hovered;
     private List<Card> _cards = new();
@@ -27,46 +25,27 @@ public class Hand : MonoBehaviour
 
     private bool _dragging;
 
+    public int Count => _cards.Count;
+
     private void Start()
     {
         _cardTemplate.gameObject.SetActive(false);
         _maxHandWidth = _maxHandPosition.position.x - _minHandPosition.position.x;
-        SpawnHand();
     }
 
     [Button]
-    private async void SpawnHand()
-	{
-        CleanUp();
-        for (var i = 0; i < _handSize; i++)
-        {
-            AddCard();
-            await Task.Delay(Mathf.RoundToInt(_animationDuration * 1000));
-        }
-        Resize();
-    }
-
-    [Button]
-    public void AddCard()
+    public async Task AddCard()
 	{
         var card = Instantiate(_cardTemplate, transform);
         card.gameObject.SetActive(true);
-        card.transform.localPosition = _deckLocation.localPosition;
+        card.transform.position = _manager.Deck.transform.position;
         card.Register(this);
         card.TweenScale(_cardScaleSize.x, 0f);
         _cards.Add(card);
         Resize();
-    }
 
-    private void CleanUp()
-	{
-        foreach(var card in _cards)
-		{
-            Destroy(card.gameObject);
-		}
-        _cards.Clear();
-        _hovered = null;
-	}
+        await Task.Delay(Mathf.RoundToInt(_animationDuration * 1000));
+    }
 
     public void CardHovered(Card card)
 	{
@@ -96,11 +75,26 @@ public class Hand : MonoBehaviour
     public void CardDragged(Card card)
 	{
         _dragging = true;
+        _manager.OnCardDragged(card);
 	}
     public void CardDropped(Card card)
     {
         _dragging = false;
+		if (!_manager.OnCardDropped())
+		{
+            card.ReturnToHand();
+            return;
+		}
+
+        Play(card);
     }
+
+    public void Play(Card card)
+	{
+        card.transform.DOMove(_manager.Trash.transform.position, _animationDuration);
+        _cards.Remove(card);
+        Resize();
+	}
 
     private void Resize()
 	{
@@ -111,6 +105,8 @@ public class Hand : MonoBehaviour
         var n = _cards.Count;
         var minCardSize = _cardTemplate.BaseWidth * _cardScaleSize.x;
         var maxCardSize = _cardTemplate.BaseWidth * _cardScaleSize.y;
+
+        // todo: handle rotation and position when hovering with 1 or 2 cards
         switch (n)
 		{
             case 0: 
@@ -195,7 +191,8 @@ public class Hand : MonoBehaviour
             xPosition += spacing + width / 2f;
             card.TweenPosition(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
             lastXPosition = xPosition + width / 2f;
-		}
+
+        }
 	}
     
 }

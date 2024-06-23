@@ -44,12 +44,15 @@ public class Card : MonoBehaviour
 	private void OnMouseDrag()
 	{
 		transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + _mouseOffset);
-
 	}
 
 	private void OnMouseUp()
 	{
 		_hand.CardDropped(this);
+	}
+
+	public void ReturnToHand()
+	{
 		transform.position = _dragStartPosition;
 	}
 
