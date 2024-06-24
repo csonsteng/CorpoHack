@@ -12,6 +12,7 @@ namespace LogicPuddle.CardManagement
         where TTarget : System.Enum
     {
         public string Name;
+        public string Description;
         public int Cost;
         public Sprite Sprite;
 
