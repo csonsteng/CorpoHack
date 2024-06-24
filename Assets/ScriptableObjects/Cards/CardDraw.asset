@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af91f1cdcd71c3b498849794d86aaff1, type: 3}
+  m_Name: CardDraw
+  m_EditorClassIdentifier: 
+  _uniqueID: CardDraw
+  Name: CardDraw
+  Cost: 0
+  Sprite: {fileID: 0}
+  Rarity: 0
+  Effects:
+  - {fileID: 11400000, guid: 6105dac909bd58f419d5439ab423d613, type: 2}
+  Color: 0
+  CardStrength: 1

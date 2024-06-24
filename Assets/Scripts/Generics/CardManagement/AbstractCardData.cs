@@ -1,9 +1,15 @@
+using LogicPuddle.Common;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace LogicPuddle.CardManagement
 {
-    public abstract class AbstractCardData<TRarity, TTarget> : ScriptableObject where TRarity : System.Enum where TTarget : System.Enum
+    public abstract class AbstractCardData<TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget> : UniqueScriptableObject
+        where TRarity : System.Enum
+        where TEffect: AbstractCardEffect<TTargetData, TTargetConfiguration, TTarget>
+        where TTargetData: AbstractTargetData<TTargetConfiguration, TTarget>
+        where TTargetConfiguration: AbstractTargetConfiguration<TTarget>
+        where TTarget : System.Enum
     {
         public string Name;
         public int Cost;
@@ -11,7 +17,7 @@ namespace LogicPuddle.CardManagement
 
         public TRarity Rarity;
 
-        public List<AbstractCardEffect<TTarget>> Effects;
+        public List<TEffect> Effects;
 
         public bool CanPlay(TTarget target)
 		{
@@ -25,11 +31,11 @@ namespace LogicPuddle.CardManagement
             return false;
 		}
 
-        public void Play<T>(AbstractTargetData<T, TTarget> target) where T : AbstractTargetConfiguration<TTarget>
+        public void Play(TTargetData target, ICardManager manager)
 		{
             foreach (var effect in Effects)
 			{
-                effect.Activate(target);
+                effect.Activate(target, manager);
 			}
 		}
     }

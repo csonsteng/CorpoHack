@@ -7,6 +7,7 @@ namespace LogicPuddle.CardManagement
 {
 	public abstract class AbstractTargetData<TConfiguration, TTarget> : ISerializable where TConfiguration: AbstractTargetConfiguration<TTarget> where TTarget : System.Enum
 	{
+		public TTarget TargetType => _configuration.TargetType;
 		protected TConfiguration _configuration;
 		public void Deserialize(Dictionary<string, object> data)
 		{
