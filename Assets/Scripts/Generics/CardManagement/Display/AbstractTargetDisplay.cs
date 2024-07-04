@@ -5,10 +5,8 @@ using UnityEngine;
 
 namespace LogicPuddle.CardManagement
 {
-    public class AbstractTargetDisplay<THand, TCard, TCardDisplay, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget> : MonoBehaviour
+    public class AbstractTargetDisplay<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget> : MonoBehaviour
         where TCard : AbstractCardData<TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
-        where THand : AbstractHandData<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
-        where TCardDisplay : AbstractCardDisplay<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
         where TRarity : Enum
         where TEffect : AbstractCardEffect<TTargetData, TTargetConfiguration, TTarget>
         where TTargetData : AbstractTargetData<TTargetConfiguration, TTarget>
@@ -29,9 +27,10 @@ namespace LogicPuddle.CardManagement
 			_targetedIndicator.SetActive(false);
 		}
 
-		public void Setup(TTargetData data)
+		public void Setup(TTargetData data, Vector3 worldPosition)
 		{
 			_data = data;
+			transform.position = worldPosition;
 		}
 
 		public void OnCardDragged(TCard card)

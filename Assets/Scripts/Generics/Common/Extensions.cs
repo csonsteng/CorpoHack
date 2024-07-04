@@ -21,5 +21,17 @@ namespace LogicPuddle.Common
 				list[swapIndex] = thisItem;
 			}
 		}
+
+		public static T Pop<T>(this List<T> list)
+		{
+			if (list == null || list.Count == 0)
+			{
+				return default;
+			}
+
+			var result = list[^1];
+			list.RemoveAt(list.Count - 1);
+			return result;
+		}
 	}
 }

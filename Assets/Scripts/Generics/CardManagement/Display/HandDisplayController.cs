@@ -7,8 +7,8 @@ namespace LogicPuddle.CardManagement
 {
     public abstract class HandDisplayController : MonoBehaviour
     {
-        [SerializeField] private Vector2 _cardScaleSize;
-        [SerializeField] private float _animationDuration = 0.1f;
+        [SerializeField] protected Vector2 _cardScaleSize;
+        [SerializeField] protected float _animationDuration = 0.1f;
         [SerializeField] private float _maxRotation = 20f;
         [SerializeField] private float _hoverYLocation = 1.15f;
 

@@ -12,8 +12,9 @@ namespace Runner.Target
 		public int OriginalStrength { get; private set; }
 		public int Strength { get; private set; }
 
-		public void Initialize()
+		public override void Setup(RunnerTargetConfiguration configuration)
 		{
+			base.Setup(configuration);
 			// todo: build these out based on target type, and difficulty
 			Color = (RunnerTargetColor)Random.Range(0, System.Enum.GetValues(typeof(RunnerTargetColor)).Length);
 			OriginalStrength = Random.Range(2, 6);

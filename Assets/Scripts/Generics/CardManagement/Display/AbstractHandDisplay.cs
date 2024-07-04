@@ -17,16 +17,6 @@ namespace LogicPuddle.CardManagement
 		where TTarget : Enum
 	{
 		[SerializeField] private TCardDisplay _cardTemplate;
-		[SerializeField] private Vector2 _cardScaleSize;
-		[SerializeField] private float _animationDuration = 0.1f;
-		[SerializeField] private float _maxRotation = 20f;
-		[SerializeField] private float _hoverYLocation = 1.15f;
-
-		[SerializeField] float _maxHandSpacing = 0.1f;
-
-		[SerializeField] Transform _minHandPosition;
-		[SerializeField] Transform _maxHandPosition;
-
 
 		private THand _data;
 

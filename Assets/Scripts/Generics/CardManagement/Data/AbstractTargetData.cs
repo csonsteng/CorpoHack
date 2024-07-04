@@ -9,6 +9,12 @@ namespace LogicPuddle.CardManagement
 	{
 		public TTarget TargetType => _configuration.TargetType;
 		protected TConfiguration _configuration;
+
+		public virtual void Setup(TConfiguration configuration)
+		{
+			_configuration = configuration;
+		}
+
 		public void Deserialize(Dictionary<string, object> data)
 		{
 			UniqueScriptableObjectLinker.TryGetUniqueObject(System.Convert.ToString(data["key"]), out _configuration);
