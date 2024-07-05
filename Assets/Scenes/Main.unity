@@ -275,6 +275,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _handDisplay: {fileID: 463087432}
+  _targetManager: {fileID: 619043065}
+  _validCards: {fileID: 11400000, guid: 9b7f5cd6009cb2547a9018192c0519f4, type: 2}
+  _handSize: 5
+  _trashLocation: {fileID: 373985492}
 --- !u!4 &62614141
 Transform:
   m_ObjectHideFlags: 0
@@ -5231,7 +5235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &312747037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5405,13 +5409,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c7bb8a08bae3eb4c834ae76d16109b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardScaleSize: {x: 0, y: 0}
+  _cardScaleSize: {x: 1, y: 1.5}
   _animationDuration: 0.1
-  _maxRotation: 20
-  _hoverYLocation: 1.15
+  _maxRotation: 15
+  _hoverYLocation: 0.65
   _maxHandSpacing: 0.1
-  _minHandPosition: {fileID: 0}
-  _maxHandPosition: {fileID: 0}
+  _minHandPosition: {fileID: 1966190777}
+  _maxHandPosition: {fileID: 510686242}
   _cardTemplate: {fileID: 4808580226921251683}
 --- !u!4 &463087433
 Transform:

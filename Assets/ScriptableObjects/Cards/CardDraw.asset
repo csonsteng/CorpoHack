@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueID: CardDraw
   Name: CardDraw
+  Description: Draw a card!
   Cost: 0
   Sprite: {fileID: 0}
   Rarity: 0

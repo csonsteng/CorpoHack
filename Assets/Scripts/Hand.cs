@@ -105,9 +105,10 @@ public class Hand : AbstractCardManagerComponent
         var n = _cards.Count;
         var minCardSize = _cardTemplate.BaseWidth * _cardScaleSize.x;
         var maxCardSize = _cardTemplate.BaseWidth * _cardScaleSize.y;
+		Debug.Log($"{minCardSize} : {maxCardSize}");
 
-        // todo: handle rotation and position when hovering with 1 or 2 cards
-        switch (n)
+		// todo: handle rotation and position when hovering with 1 or 2 cards
+		switch (n)
 		{
             case 0: 
                 return;
@@ -135,7 +136,7 @@ public class Hand : AbstractCardManagerComponent
            maxCardSize + (minCardSize + _maxHandSpacing) * (n - 1);
 
         var finalWidth = Mathf.Min(_maxHandWidth, desiredWidth);
-        var handLeftSide = -finalWidth / 2f;
+		var handLeftSide = -finalWidth / 2f;
 
         var spacing = _hovered == null ? (finalWidth - n * minCardSize) / (n - 1) :
             (finalWidth - maxCardSize - 2 * _maxHandSpacing - minCardSize * (n - 1)) / (n - 2);
@@ -144,8 +145,9 @@ public class Hand : AbstractCardManagerComponent
         var hoveredLocation = n;
         var lastXPosition = 0f;
         var thickness = _cardTemplate.CardThickness;
-        
-        for (var i = 0; i < n; i++)
+		Debug.Log($"old desiredWidth {desiredWidth} finalWidth {finalWidth} spacing {spacing} t{thickness}");
+
+		for (var i = 0; i < n; i++)
 		{
             var card = _cards[i];
             var width = minCardSize;

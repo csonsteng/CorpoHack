@@ -13,6 +13,13 @@ namespace LogicPuddle.Common
 
         private Dictionary<string, TObjectType> _dictionary;
 
+        public List<TObjectType> GetAll()
+        {
+            var allObjects = new List<TObjectType>();
+            allObjects.AddRange(_managedObjects);
+            return allObjects;
+        }
+
         public void BuildDictionary()
 		{
             _dictionary = new Dictionary<string, TObjectType>();

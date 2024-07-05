@@ -20,14 +20,9 @@ namespace LogicPuddle.CardManagement
         private IDraggableCard _hovered;
         protected abstract List<IDraggableCard> _cards { get; }
 
-        private float _maxHandWidth;
 
         private bool _dragging;
 
-        private void Awake()
-        {
-            _maxHandWidth = _maxHandPosition.position.x - _minHandPosition.position.x;
-        }
         public void CardHovered(IDraggableCard card)
         {
             if (_dragging)
@@ -77,18 +72,19 @@ namespace LogicPuddle.CardManagement
             var minCardSize = _cards[0].BaseWidth * _cardScaleSize.x;
             var maxCardSize = _cards[0].BaseWidth * _cardScaleSize.y;
 
+			var maxHandWidth = _maxHandPosition.position.x - _minHandPosition.position.x;
             // todo: handle rotation and position when hovering with 1 or 2 cards
             switch (n)
             {
                 case 0:
                     return;
                 case 1:
-                    _cards[0].TweenPosition(Vector3.zero, _animationDuration);
+                    _cards[0].TweenPositionLocal(Vector3.zero, _animationDuration);
                     return;
                 case 2:
                     var twoCardPosition = (maxCardSize - minCardSize + _maxHandSpacing) / 2f;
-                    _cards[0].TweenPosition(new Vector3(-twoCardPosition, 0f, 0f), _animationDuration);
-                    _cards[1].TweenPosition(new Vector3(twoCardPosition, 0f, 0f), _animationDuration);
+                    _cards[0].TweenPositionLocal(new Vector3(-twoCardPosition, 0f, 0f), _animationDuration);
+                    _cards[1].TweenPositionLocal(new Vector3(twoCardPosition, 0f, 0f), _animationDuration);
                     return;
                     /*
                                 case 3:
@@ -105,7 +101,7 @@ namespace LogicPuddle.CardManagement
             var desiredWidth = _hovered == null ? n * minCardSize + _maxHandSpacing * (n - 1) :
                maxCardSize + (minCardSize + _maxHandSpacing) * (n - 1);
 
-            var finalWidth = Mathf.Min(_maxHandWidth, desiredWidth);
+            var finalWidth = Mathf.Min(maxHandWidth, desiredWidth);
             var handLeftSide = -finalWidth / 2f;
 
             var spacing = _hovered == null ? (finalWidth - n * minCardSize) / (n - 1) :
@@ -116,7 +112,7 @@ namespace LogicPuddle.CardManagement
             var lastXPosition = 0f;
             var thickness = _cards[0].CardThickness;
 
-            for (var i = 0; i < n; i++)
+			for (var i = 0; i < n; i++)
             {
                 var card = _cards[i];
                 var width = minCardSize;
@@ -146,7 +142,7 @@ namespace LogicPuddle.CardManagement
                 if (i == 0)
                 {
                     xPosition = handLeftSide + width / 2f;
-                    card.TweenPosition(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                    card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                     lastXPosition = xPosition + width / 2f;
                     continue;
                 }
@@ -154,13 +150,13 @@ namespace LogicPuddle.CardManagement
                 if (hoveredLocation == i || hoveredLocation == i - 1)
                 {
                     xPosition += _maxHandSpacing + width / 2f;
-                    card.TweenPosition(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                    card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                     lastXPosition = xPosition + width / 2f;
                     continue;
                 }
 
                 xPosition += spacing + width / 2f;
-                card.TweenPosition(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                 lastXPosition = xPosition + width / 2f;
 
             }

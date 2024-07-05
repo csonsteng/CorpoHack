@@ -41,13 +41,13 @@ namespace LogicPuddle.CardManagement
 		public float BaseWidth => _baseSize.x;
 		public float CardThickness => _baseSize.z;
 
-		public void Setup(TCard card, IDeckConfiguration deckConfiguration)
+		public void Setup(TCard card)//, IDeckConfiguration deckConfiguration)
 		{
 			_cardImage.sprite = card.Sprite;
 			_name.text = card.Name;
 			_description.text = card.Description;
 
-			_cardBacking.sprite = deckConfiguration.Backing;
+			//_cardBacking.sprite = deckConfiguration.Backing;
 
 			// todo : card frame based on rarity?
 		}
@@ -103,8 +103,7 @@ namespace LogicPuddle.CardManagement
 			{
 				_positionTween.Kill();
 			}
-
-			_positionTween = transform.DOLocalMove(position, duration);
+			_positionTween = transform.DOMove(position, duration);
 		}
 
 		public void TweenPositionLocal(Vector3 position, float duration)

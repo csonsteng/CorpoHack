@@ -49,6 +49,7 @@ namespace LogicPuddle.CardManagement
 
 		protected override void OnCardDragged(IDraggableCard card)
 		{
+			_processingCard = card;
 			_onDragCallback.Invoke(_cardDictionary[card]);
 		}
 		protected override void OnCardDropped(IDraggableCard card)
@@ -77,7 +78,7 @@ namespace LogicPuddle.CardManagement
 			var card = Instantiate(_cardTemplate, _cardTemplate.transform.parent);
 			card.gameObject.SetActive(true);
 			card.Register(this);
-
+			card.Setup(cardData);
 			card.TweenScale(_cardScaleSize.x, 0f);
 			_cardDictionary[card] = cardData;
 			return card;
