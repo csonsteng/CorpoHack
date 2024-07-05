@@ -60,18 +60,19 @@ namespace LogicPuddle.CardManagement
 		/// <summary>
 		/// Returns true if valid target
 		/// </summary>
-		public bool OnCardDropped()
+		public bool OnCardDropped(out TTargetData targetData)
 		{
-			var foundTarget = false;
+			targetData = null;
 			// this approach will definitely bug out if targets are overlapped
 			foreach (var target in _targets)
 			{
 				if (target.OnCardDropped())
 				{
-					foundTarget = true;
+					targetData = target.Data;
+					return true;
 				}
 			}
-			return foundTarget;
+			return false;
 		}
 
 	}

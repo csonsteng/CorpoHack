@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uniqueID: Deck
   Name: Deck
-  BaseCardPrefab: {fileID: 0}
-  BaseCardPrefabUI: {fileID: 0}
   Cards:
+  - {fileID: 11400000, guid: 7d0c91b427cb6a04ebe6a3423d89baec, type: 2}
   - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
+  BackingImage: {fileID: 0}

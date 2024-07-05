@@ -6,9 +6,12 @@ using UnityEngine;
 
 namespace LogicPuddle.CardManagement
 {
-    public abstract class AbstractCardDisplayManager<THand, TCard, TCardDisplay, THandDisplay, TRarity, TEffect, TTargetManager, TTargetDisplay, TTargetData, TTargetConfiguration, TTarget> : MonoBehaviour
+    public abstract class AbstractCardDisplayManager<TCardManager, THand, TDeck, TTrash, TCard, TCardDisplay, THandDisplay, TRarity, TEffect, TTargetManager, TTargetDisplay, TTargetData, TTargetConfiguration, TTarget> : MonoBehaviour
+		where TCardManager : AbstractCardManager<THand, TDeck, TTrash, TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
 		where TCard : AbstractCardData<TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
 		where THand : AbstractHandData<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>, new()
+		where TDeck : AbstractDeckData<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>, new()
+		where TTrash : AbstractTrashData<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>, new()
 		where THandDisplay : AbstractHandDisplay<THand, TCard, TCardDisplay, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
 		where TCardDisplay : AbstractCardDisplay<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
 		where TTargetManager : AbstractTargetManager<TTargetDisplay, TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget>
@@ -19,30 +22,23 @@ namespace LogicPuddle.CardManagement
 		where TTargetConfiguration : AbstractTargetConfiguration<TTarget>
 		where TTarget : Enum
     {
+
+		[SerializeField] private TCardManager _cardManager;
 		[SerializeField] private THandDisplay _handDisplay;
 		[SerializeField] private TTargetManager _targetManager;
-		[SerializeField] private UniqueScriptableObjectList<TCard> _validCards;
-
-		[SerializeField] private int _handSize;
-
 
 		[SerializeField] private Transform _trashLocation;
+		[SerializeField] private Transform _deckLocation;
 
 
 		private THand _handData;
+		
 
 
-
-		private void Start()
+		private void Awake()
 		{
-			_handData = new THand();
-			var validCards = _validCards.GetAll();
-			for(var i = 0; i < _handSize; i++)
-			{
-				validCards.Shuffle();
-				_handData.Add(validCards[0]);
-			}
-			_handDisplay.Setup(_handData, OnCardDragged, OnCardDropped);
+			_handData = _cardManager.Hand;
+			_handDisplay.Setup(_handData, _deckLocation, OnCardDragged, OnCardDropped);
 		}
 
 		private void OnCardDragged(TCard card)
@@ -52,14 +48,13 @@ namespace LogicPuddle.CardManagement
 
 		private void OnCardDropped(TCard card)
 		{
-			if (!_targetManager.OnCardDropped())
+			if (!_targetManager.OnCardDropped(out var target))
 			{
 				_handDisplay.UnableToPlayCard();
 				return;
 			}
 
-			// found a target for the card
-			Debug.Log("card was played");
+			_cardManager.PlayCard(card, target);
 			_handDisplay.AnimateCardToTrash(_trashLocation.position);
 		}
 	}

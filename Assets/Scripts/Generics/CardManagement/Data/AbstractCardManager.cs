@@ -21,26 +21,45 @@ namespace LogicPuddle.CardManagement
 		public THand Hand = new();
 		public TTrash Trash = new();
 
+		[SerializeField] private AbstractBaseDeck<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTargetType> _startingDeck;
+		[SerializeField] private int _handSize;
 
-		public void DrawCard()
+		private void Start()
+		{
+			Deck.UnlockCards(_startingDeck.Cards);
+			Deck.Reset();
+			for (var i = 0; i < _handSize; i++)
+			{
+				DrawCard();
+			}
+		}
+
+
+		public bool DrawCard()
 		{
 			var card = Deck.DrawCard();
+			if(card == null)
+			{
+				Debug.Log("no more cards in deck");
+				return false;
+			}
 			Hand.Add(card);
+			return true;
 		}
 
 		public void PlayCard(TCard card, TTargetData target)
 		{
-			// todo: need animation timing?
-			if (!card.CanPlay(target.TargetType))
-			{
-				return;
-			}
 			if (!Hand.Remove(card))
 			{
 				return;
 			}
+			Trash.Add(card);	// add to trash before play so GC can collect itself
 			card.Play(target, this);
-			Trash.Add(card);
+
+			while (Hand.GetAll().Count < _handSize && DrawCard())
+			{
+				// fill back up to handsize
+			}
 		}
 
 		public void ShuffleTrashIntoDeck()

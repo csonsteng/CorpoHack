@@ -6,13 +6,13 @@ using UnityEngine;
 
 namespace Runner.Deck.Effects
 {
-	[CreateAssetMenu(menuName = "Runner/CardEffects/DrawCard")]
-	public class DrawCard : AbstractRunnerCardEffect
+	[CreateAssetMenu(menuName = "Runner/CardEffects/ShuffleTrashToDeck")]
+	public class ShuffleTrashToDeck : AbstractRunnerCardEffect
 	{
 		public override void Activate(RunnerTargetData target, ICardManager manager)
 		{
-			Debug.Log("draw a card");
-			manager.DrawCard();
+			Debug.Log("shuffle trash to deck");
+			manager.ShuffleTrashIntoDeck();
 		}
 	}
 }

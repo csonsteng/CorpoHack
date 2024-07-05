@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using LogicPuddle.Common;
@@ -15,9 +16,34 @@ namespace LogicPuddle.CardManagement
 	{
 		private readonly CardContainer<TCard, TRarity, TEffect, TTargetData, TTargetConfiguration, TTarget> _cards = new();
 
+		public Action<TCard> CardAdded;
+		public Action<TCard> CardRemoved;
 		public List<TCard> GetAll() => _cards;
-		public void Add(TCard card) => _cards.AddToBottom(card);
-		public bool Remove(TCard card) => _cards.RemoveCard(card);
+
+		public void RegisterListeners(Action<TCard> cardAdded, Action<TCard> cardRemoved)
+		{
+			CardAdded += cardAdded;
+			CardRemoved += cardRemoved;
+		}
+		public void UnregisterListeners(Action<TCard> cardAdded, Action<TCard> cardRemoved)
+		{
+			CardAdded -= cardAdded;
+			CardRemoved -= cardRemoved;
+		}
+		public void Add(TCard card)
+		{
+			_cards.AddToBottom(card);
+			CardAdded?.Invoke(card);
+		}
+		public bool Remove(TCard card)
+		{
+			if (!_cards.RemoveCard(card))
+			{
+				return false;
+			}
+			CardRemoved?.Invoke(card);
+			return true;
+		}
 		public void Clear() => _cards.Clear();
 
 		public void Deserialize(Dictionary<string, object> data)

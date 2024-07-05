@@ -8,10 +8,12 @@ namespace LogicPuddle.CardManagement
     {
         public float BaseWidth { get; }
         public float CardThickness { get; }
-        public void TweenScale(float scale, float duration);
-        public void TweenPositionLocal(Vector3 position, float duration);
-        public void TweenPosition(Vector3 position, float duration);
-        public void TweenRotation(float rotation, float duration);
+        public void Scale(float scale, float duration);
+        public void MovePositionLocal(Vector3 position, float duration);
+        public void MovePosition(Vector3 position, float duration);
+        public void TurnFaceDown(float duration);
+        public void TurnFaceUp(float duration);
+		public void RotateInPlane(float rotation, float duration);
         public void ReturnToHand();
         public void Register(HandDisplayController controller);
     }

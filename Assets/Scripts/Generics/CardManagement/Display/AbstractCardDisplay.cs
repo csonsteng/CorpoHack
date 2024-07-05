@@ -41,15 +41,38 @@ namespace LogicPuddle.CardManagement
 		public float BaseWidth => _baseSize.x;
 		public float CardThickness => _baseSize.z;
 
-		public void Setup(TCard card)//, IDeckConfiguration deckConfiguration)
+		private Vector3 _lastRotationTarget = Vector3.zero;
+		private float _normalZRotation = 0f;
+
+		public void Setup(TCard card, Vector3 position)//, IDeckConfiguration deckConfiguration)
 		{
 			_cardImage.sprite = card.Sprite;
 			_name.text = card.Name;
 			_description.text = card.Description;
+			transform.position = position;
+			TurnFaceDown(0f);
 
 			//_cardBacking.sprite = deckConfiguration.Backing;
 
 			// todo : card frame based on rarity?
+		}
+
+		public void TurnFaceDown(float duration)
+		{
+			_name.gameObject.SetActive(false);
+			_description.gameObject.SetActive(false);
+			_cardImage.gameObject.SetActive(false);
+
+			TweenRotation(new Vector3(0f, 180f, _normalZRotation), duration);
+		}
+
+		public void TurnFaceUp(float duration)
+		{
+			_name.gameObject.SetActive(true);
+			_description.gameObject.SetActive(true);
+			_cardImage.gameObject.SetActive(true);
+
+			TweenRotation(new Vector3(0f, 0f, _normalZRotation), duration);
 		}
 
 		public void Register(HandDisplayController controller)
@@ -88,7 +111,7 @@ namespace LogicPuddle.CardManagement
 			transform.position = _dragStartPosition;
 		}
 
-		public void TweenScale(float scale, float duration)
+		public void Scale(float scale, float duration)
 		{
 			if (_scaleTween.IsActive())
 			{
@@ -97,7 +120,7 @@ namespace LogicPuddle.CardManagement
 
 			_scaleTween = transform.DOScale(scale * _baseSize, duration);
 		}
-		public void TweenPosition(Vector3 position, float duration)
+		public void MovePosition(Vector3 position, float duration)
 		{
 			if (_positionTween.IsActive())
 			{
@@ -106,7 +129,7 @@ namespace LogicPuddle.CardManagement
 			_positionTween = transform.DOMove(position, duration);
 		}
 
-		public void TweenPositionLocal(Vector3 position, float duration)
+		public void MovePositionLocal(Vector3 position, float duration)
 		{
 			if (_positionTween.IsActive())
 			{
@@ -115,14 +138,23 @@ namespace LogicPuddle.CardManagement
 
 			_positionTween = transform.DOLocalMove(position, duration);
 		}
-		public void TweenRotation(float rotation, float duration)
+		public void RotateInPlane(float rotation, float duration)
+		{
+			_normalZRotation = rotation;
+			TweenRotation(new Vector3(0f, _lastRotationTarget.y, rotation), duration);
+		}
+		private void TweenRotation(Vector3 rotation, float duration)
 		{
 			if (_rotationTween.IsActive())
 			{
 				_rotationTween.Kill();
 			}
 
-			_rotationTween = transform.DOLocalRotate(new Vector3(0f, 0f, rotation), duration);
+			_lastRotationTarget = IsFaceUp(rotation) ? rotation : new Vector3(0f, rotation.y, -_normalZRotation);
+
+			_rotationTween = transform.DOLocalRotate(_lastRotationTarget, duration);
 		}
+
+		private bool IsFaceUp(Vector3 rotation) => Mathf.Abs(rotation.y) < 90f;
 	}
 }

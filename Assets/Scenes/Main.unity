@@ -255,6 +255,7 @@ GameObject:
   m_Component:
   - component: {fileID: 62614141}
   - component: {fileID: 62614140}
+  - component: {fileID: 62614142}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -274,11 +275,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97261b5d8eb7f0e4d91fede1f7a23a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cardManager: {fileID: 62614142}
   _handDisplay: {fileID: 463087432}
   _targetManager: {fileID: 619043065}
-  _validCards: {fileID: 11400000, guid: 9b7f5cd6009cb2547a9018192c0519f4, type: 2}
-  _handSize: 5
   _trashLocation: {fileID: 373985492}
+  _deckLocation: {fileID: 983004773}
 --- !u!4 &62614141
 Transform:
   m_ObjectHideFlags: 0
@@ -298,6 +299,20 @@ Transform:
   - {fileID: 619043064}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &62614142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62614139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8b05302cf555549833a0d38f181cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingDeck: {fileID: 11400000, guid: e3a174a3b84420842be19fbbed02d2ff, type: 2}
+  _handSize: 5
 --- !u!1 &106338665
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,6 +18,8 @@ namespace LogicPuddle.CardManagement
 
 		[SerializeField] private TTargetData _data;
 
+		public TTargetData Data => _data;
+
 		private bool _hasCard;
 		private bool _hovered;
 

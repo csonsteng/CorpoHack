@@ -9,7 +9,10 @@ using UnityEngine;
 namespace Runner
 {
 	public class RunnerCardDisplayManager : AbstractCardDisplayManager<
+		RunnerDeckManager,
 		RunnerHand, 
+		RunnerDeck,
+		RunnerTrash,
 		RunnerCardData, 
 		RunnerCardDisplay, 
 		RunnerHandDisplay, 

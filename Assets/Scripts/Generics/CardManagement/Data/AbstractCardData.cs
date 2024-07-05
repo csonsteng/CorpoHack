@@ -34,7 +34,8 @@ namespace LogicPuddle.CardManagement
 
         public void Play(TTargetData target, ICardManager manager)
 		{
-            foreach (var effect in Effects)
+			Debug.Log("card was played");
+			foreach (var effect in Effects)
 			{
                 effect.Activate(target, manager);
 			}

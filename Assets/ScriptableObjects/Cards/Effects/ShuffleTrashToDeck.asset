@@ -9,9 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3a358c1805075a4ab7f3152f3f5b9ae, type: 3}
-  m_Name: Runner Card List
+  m_Script: {fileID: 11500000, guid: 4237dcf712d1ffa4595fda1526a9614e, type: 3}
+  m_Name: ShuffleTrashToDeck
   m_EditorClassIdentifier: 
-  _managedObjects:
-  - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
-  - {fileID: 11400000, guid: 7d0c91b427cb6a04ebe6a3423d89baec, type: 2}
+  ValidTargets: 00000000

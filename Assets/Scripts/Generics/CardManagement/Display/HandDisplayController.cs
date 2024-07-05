@@ -30,7 +30,7 @@ namespace LogicPuddle.CardManagement
                 return;
             }
             _hovered = card;
-            card.TweenScale(_cardScaleSize.y, _animationDuration);
+            card.Scale(_cardScaleSize.y, _animationDuration);
             Resize();
         }
 
@@ -43,7 +43,7 @@ namespace LogicPuddle.CardManagement
             if (_hovered == card)
             {
                 _hovered = null;
-                card.TweenScale(_cardScaleSize.x, _animationDuration);
+                card.Scale(_cardScaleSize.x, _animationDuration);
                 Resize();
             }
         }
@@ -79,12 +79,12 @@ namespace LogicPuddle.CardManagement
                 case 0:
                     return;
                 case 1:
-                    _cards[0].TweenPositionLocal(Vector3.zero, _animationDuration);
+                    _cards[0].MovePositionLocal(Vector3.zero, _animationDuration);
                     return;
                 case 2:
                     var twoCardPosition = (maxCardSize - minCardSize + _maxHandSpacing) / 2f;
-                    _cards[0].TweenPositionLocal(new Vector3(-twoCardPosition, 0f, 0f), _animationDuration);
-                    _cards[1].TweenPositionLocal(new Vector3(twoCardPosition, 0f, 0f), _animationDuration);
+                    _cards[0].MovePositionLocal(new Vector3(-twoCardPosition, 0f, 0f), _animationDuration);
+                    _cards[1].MovePositionLocal(new Vector3(twoCardPosition, 0f, 0f), _animationDuration);
                     return;
                     /*
                                 case 3:
@@ -123,7 +123,7 @@ namespace LogicPuddle.CardManagement
                     width = maxCardSize;
                     yPosition = _hoverYLocation;
 
-                    card.TweenRotation(0f, _animationDuration);
+                    card.RotateInPlane(0f, _animationDuration);
                 } else
                 {
                     // todo: accumulate yPosition 
@@ -136,13 +136,13 @@ namespace LogicPuddle.CardManagement
                         yPosition -= width * Mathf.Sin(Mathf.Deg2Rad * angle);
 
                     }
-                    card.TweenRotation(-Mathf.Sign(i - (n - 1) / 2f) * angle, _animationDuration);
+                    card.RotateInPlane(-Mathf.Sign(i - (n - 1) / 2f) * angle, _animationDuration);
                 }
                 var xPosition = lastXPosition;
                 if (i == 0)
                 {
                     xPosition = handLeftSide + width / 2f;
-                    card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                    card.MovePositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                     lastXPosition = xPosition + width / 2f;
                     continue;
                 }
@@ -150,13 +150,13 @@ namespace LogicPuddle.CardManagement
                 if (hoveredLocation == i || hoveredLocation == i - 1)
                 {
                     xPosition += _maxHandSpacing + width / 2f;
-                    card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                    card.MovePositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                     lastXPosition = xPosition + width / 2f;
                     continue;
                 }
 
                 xPosition += spacing + width / 2f;
-                card.TweenPositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
+                card.MovePositionLocal(new Vector3(xPosition, yPosition, i * thickness), _animationDuration);
                 lastXPosition = xPosition + width / 2f;
 
             }

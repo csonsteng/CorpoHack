@@ -28,23 +28,33 @@ namespace LogicPuddle.CardManagement
 		private Action<TCard> _onDropCallback;
 
 		private IDraggableCard _processingCard;
+		private Vector3 _drawPoint;
 		
 		private void Awake()
 		{
 			_cardTemplate.gameObject.SetActive(false);
 		}
 
-		public void Setup(THand hand, Action<TCard> cardDraggedCallback, Action<TCard> cardDroppedCallback)
+		public void Setup(THand hand, Transform drawPoint, Action<TCard> cardDraggedCallback, Action<TCard> cardDroppedCallback)
 		{
 			_data = hand;
+			_drawPoint = drawPoint.position;
 			_onDragCallback = cardDraggedCallback;
 			_onDropCallback = cardDroppedCallback;
+			_data.RegisterListeners(OnCardAdded, OnCardRemoved);
 			_cards.Clear();
-			foreach (var cardData in _data.GetAll())
-			{
-				SpawnCard(cardData);
-			}
+		}
+
+		private void OnCardAdded(TCard cardData)
+		{
+			var card = SpawnCard(cardData);
+			card.TurnFaceUp(_animationDuration);
 			Resize();
+		}
+
+		private void OnCardRemoved(TCard card)
+		{
+			// logic should probably happen here rather than called AnimateToTrash
 		}
 
 		protected override void OnCardDragged(IDraggableCard card)
@@ -65,7 +75,9 @@ namespace LogicPuddle.CardManagement
 
 		public void AnimateCardToTrash(Vector3 trashLocation)
 		{
-			_processingCard.TweenPosition(trashLocation, _animationDuration);
+			_processingCard.MovePosition(trashLocation, _animationDuration);
+			_processingCard.RotateInPlane(0f, _animationDuration);
+			_processingCard.TurnFaceDown(_animationDuration);
 			_cardDictionary.Remove(_processingCard);
 			_processingCard = null;
 			Resize();
@@ -78,19 +90,10 @@ namespace LogicPuddle.CardManagement
 			var card = Instantiate(_cardTemplate, _cardTemplate.transform.parent);
 			card.gameObject.SetActive(true);
 			card.Register(this);
-			card.Setup(cardData);
-			card.TweenScale(_cardScaleSize.x, 0f);
+			card.Setup(cardData, _drawPoint);
+			card.Scale(_cardScaleSize.x, 0f);
 			_cardDictionary[card] = cardData;
 			return card;
 		}
-
-		public void OnCardDraw(TCard cardData, Vector3 drawPoint)
-		{
-			var card = SpawnCard(cardData);
-			card.TweenPosition(drawPoint, 0f);
-			Resize();
-		}
-
-
 	}
 }
