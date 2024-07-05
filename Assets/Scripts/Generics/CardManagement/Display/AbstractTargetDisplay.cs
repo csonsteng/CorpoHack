@@ -29,7 +29,7 @@ namespace LogicPuddle.CardManagement
 			_targetedIndicator.SetActive(false);
 		}
 
-		public void Setup(TTargetData data, Vector3 worldPosition)
+		public virtual void Setup(TTargetData data, Vector3 worldPosition)
 		{
 			_data = data;
 			transform.position = worldPosition;

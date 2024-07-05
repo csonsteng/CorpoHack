@@ -1,7 +1,11 @@
 using LogicPuddle.CardManagement;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
+
 
 namespace Runner.Target
 {
@@ -12,6 +16,8 @@ namespace Runner.Target
 		public int OriginalStrength { get; private set; }
 		public int Strength { get; private set; }
 
+		private Action StrengthChanged;
+
 		public override void Setup(RunnerTargetConfiguration configuration)
 		{
 			base.Setup(configuration);
@@ -21,9 +27,15 @@ namespace Runner.Target
 			Strength = OriginalStrength;
 		}
 
+		public void RegisterListener(Action onStrengthChange)
+		{
+			StrengthChanged += onStrengthChange;
+		}
+
 		public bool Damage(int amount)
 		{
 			Strength = Mathf.Max(Strength - amount, 0);
+			StrengthChanged?.Invoke();
 			return Strength == 0;
 		}
 
