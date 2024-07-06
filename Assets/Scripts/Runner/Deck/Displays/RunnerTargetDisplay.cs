@@ -8,14 +8,83 @@ using UnityEngine;
 
 namespace Runner
 {
-	public class RunnerTargetDisplay : AbstractTargetDisplay<RunnerCardData, RunnerCardRarity, AbstractRunnerCardEffect, RunnerTargetData, RunnerTargetConfiguration, RunnerTargetType>
+	public class RunnerTargetDisplay : MonoBehaviour
 	{
 		[SerializeField] RunnerTargetIndicator _strengthIndicator;
+		[SerializeField] private GameObject _validTargetIndicator;
+		[SerializeField] private GameObject _targetedIndicator;
 
-		public override void Setup(RunnerTargetData data, Vector3 worldPosition)
+		[SerializeField] private RunnerTargetData _data;
+
+		public RunnerTargetData Data => _data;
+
+		private bool _hasCard;
+		private bool _hovered;
+		private void Start()
 		{
-			base.Setup(data, worldPosition);
+			_validTargetIndicator.SetActive(false);
+			_targetedIndicator.SetActive(false);
+		}
+
+		public void Setup(RunnerTargetData data, Vector3 worldPosition)
+		{
+			_data = data;
+			transform.position = worldPosition;
 			_strengthIndicator.Setup(data);
+		}
+
+		public void OnCardDragged(RunnerCardData card)
+		{
+			if (!card.CanPlay(_data))
+			{
+				return;
+			}
+			_hasCard = true;
+			_validTargetIndicator.SetActive(true);
+		}
+
+		public bool OnCardDropped()
+		{
+			_hasCard = false;
+			var wasHovered = _hovered;
+			MouseExit();
+			_validTargetIndicator.SetActive(false);
+			return wasHovered;
+		}
+
+		private void Update()
+		{
+			if (!_hasCard)
+			{
+				return;
+			}
+
+			var hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
+			if (hits == null)
+			{
+				return;
+			}
+			foreach (var hit in hits)
+			{
+				if (hit.collider.gameObject != gameObject)
+				{
+					continue;
+				}
+				MouseEnter();
+				return;
+			}
+			MouseExit();
+		}
+
+		private void MouseEnter()
+		{
+			_targetedIndicator.SetActive(true);
+			_hovered = true;
+		}
+		private void MouseExit()
+		{
+			_targetedIndicator.SetActive(false);
+			_hovered = false;
 		}
 
 

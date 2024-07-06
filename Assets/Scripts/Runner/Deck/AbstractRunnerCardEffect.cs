@@ -6,8 +6,11 @@ using UnityEngine;
 
 namespace Runner.Deck.Effects
 {
-	public abstract class AbstractRunnerCardEffect : AbstractCardEffect<RunnerTargetData, RunnerTargetConfiguration, RunnerTargetType>
+	public abstract class AbstractRunnerCardEffect : ScriptableObject
 	{
 
+		public abstract bool IsValidTarget(RunnerTargetData target);
+
+		public abstract void Activate(RunnerTargetData target, ICardManager manager);
 	}
 }
