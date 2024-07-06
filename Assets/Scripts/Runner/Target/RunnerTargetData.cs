@@ -1,16 +1,20 @@
 using LogicPuddle.CardManagement;
+using LogicPuddle.Common;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
 
 
 
 namespace Runner.Target
 {
-	public class RunnerTargetData : AbstractTargetData<RunnerTargetConfiguration, RunnerTargetType>
+	public class RunnerTargetData : ISerializable
 	{
+		public RunnerTargetType TargetType => _configuration.TargetType;
+		protected RunnerTargetConfiguration _configuration;
 		public RunnerTargetColor Color { get; private set; }
 
 		public int OriginalStrength { get; private set; }
@@ -18,9 +22,9 @@ namespace Runner.Target
 
 		private Action StrengthChanged;
 
-		public override void Setup(RunnerTargetConfiguration configuration)
+		public void Setup(RunnerTargetConfiguration configuration)
 		{
-			base.Setup(configuration);
+			_configuration = configuration;
 			// todo: build these out based on target type, and difficulty
 			Color = (RunnerTargetColor)Random.Range(0, System.Enum.GetValues(typeof(RunnerTargetColor)).Length);
 			OriginalStrength = Random.Range(2, 6);
@@ -39,18 +43,24 @@ namespace Runner.Target
 			return Strength == 0;
 		}
 
-		protected override void FinishDeserialization(Dictionary<string, object> data)
+		public void Deserialize(Dictionary<string, object> data)
 		{
+
+			UniqueScriptableObjectLinker.TryGetUniqueObject(System.Convert.ToString(data["key"]), out _configuration);
 			Color = (RunnerTargetColor)System.Convert.ToInt32(data["color"]);
 			Strength = System.Convert.ToInt32(data["strength"]);
 			OriginalStrength = System.Convert.ToInt32(data["original-strength"]);
 		}
 
-		protected override Dictionary<string, object> FinishSerialization(Dictionary<string, object> data)
+		public Dictionary<string, object> Serialize()
 		{
-			data["color"] = (int)Color;
-			data["strength"] = Strength;
-			data["original-strength"] = OriginalStrength;
+			var data = new Dictionary<string, object>
+			{
+				{ "key", _configuration.UniqueID },
+				{ "color", (int)Color },
+				{ "strength", Strength },
+				{ "original-strength", OriginalStrength }
+			};
 			return data;
 		}
 	}
