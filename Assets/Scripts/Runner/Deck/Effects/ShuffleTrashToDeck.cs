@@ -11,8 +11,9 @@ namespace Runner.Deck.Effects
 	{
 		public override void Activate(RunnerTargetData target, ICardManager manager)
 		{
-			Debug.Log("shuffle trash to deck");
 			manager.ShuffleTrashIntoDeck();
 		}
+
+		public override bool IsValidTarget(RunnerTargetData target) => false;
 	}
 }

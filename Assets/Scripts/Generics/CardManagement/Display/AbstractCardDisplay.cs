@@ -44,7 +44,7 @@ namespace LogicPuddle.CardManagement
 		private Vector3 _lastRotationTarget = Vector3.zero;
 		private float _normalZRotation = 0f;
 
-		public void Setup(TCard card, Vector3 position)//, IDeckConfiguration deckConfiguration)
+		public virtual void Setup(TCard card, Vector3 position)//, IDeckConfiguration deckConfiguration)
 		{
 			_cardImage.sprite = card.Sprite;
 			_name.text = card.Name;

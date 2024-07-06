@@ -9,9 +9,7 @@ namespace LogicPuddle.CardManagement
 		where TTargetConfiguration: AbstractTargetConfiguration<TTarget>
 		where TTarget : System.Enum
 	{
-		public List<TTarget> ValidTargets;
-
-		public bool IsValidTarget(TTarget targetType) => ValidTargets != null && ValidTargets.Contains(targetType);
+		public abstract bool IsValidTarget(TTargetData target);
 
 		public abstract void Activate(TTargetData target, ICardManager manager);
 

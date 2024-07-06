@@ -11,8 +11,9 @@ namespace Runner.Deck.Effects
 	{
 		public override void Activate(RunnerTargetData target, ICardManager manager)
 		{
-			Debug.Log("draw a card");
 			manager.DrawCard();
 		}
+
+		public override bool IsValidTarget(RunnerTargetData target) => false;
 	}
 }

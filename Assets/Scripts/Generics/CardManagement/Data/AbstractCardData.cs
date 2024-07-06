@@ -20,7 +20,7 @@ namespace LogicPuddle.CardManagement
 
         public List<TEffect> Effects;
 
-        public bool CanPlay(TTarget target)
+        public virtual bool CanPlay(TTargetData target)
 		{
             foreach (var effect in Effects)
 			{
@@ -32,9 +32,10 @@ namespace LogicPuddle.CardManagement
             return false;
 		}
 
-        public void Play(TTargetData target, ICardManager manager)
+        public virtual void Play(TTargetData target, ICardManager manager)
 		{
 			Debug.Log("card was played");
+            
 			foreach (var effect in Effects)
 			{
                 effect.Activate(target, manager);

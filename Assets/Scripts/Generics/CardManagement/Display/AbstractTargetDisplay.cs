@@ -37,7 +37,7 @@ namespace LogicPuddle.CardManagement
 
 		public void OnCardDragged(TCard card)
 		{
-			if (!card.CanPlay(_data.TargetType))
+			if (!card.CanPlay(_data))
 			{
 				return;
 			}
