@@ -28,25 +28,23 @@ namespace Runner
 		private RunnerCardDisplay _hovered;
 
 		protected List<RunnerCardDisplay> _cards = new List<RunnerCardDisplay>();
-
-		private Action<RunnerCardData> _onDragCallback;
-		private Action<RunnerCardData> _onDropCallback;
-
+		private RunnerCardDisplayManager _manager;
 		private RunnerCardDisplay _processingCard;
 		private Vector3 _drawPoint;
 		private bool _dragging;
+
+		public RunnerCardDisplay ProcessingCard => _processingCard;
 
 		private void Awake()
 		{
 			_cardTemplate.gameObject.SetActive(false);
 		}
 
-		public void Setup(RunnerHand hand, Transform drawPoint, Action<RunnerCardData> cardDraggedCallback, Action<RunnerCardData> cardDroppedCallback)
+		public void Setup(RunnerHand hand, Transform drawPoint, RunnerCardDisplayManager manager)
 		{
 			_data = hand;
+			_manager = manager;
 			_drawPoint = drawPoint.position;
-			_onDragCallback = cardDraggedCallback;
-			_onDropCallback = cardDroppedCallback;
 			_data.RegisterListeners(OnCardAdded, OnCardRemoved);
 			_cards.Clear();
 		}
@@ -94,7 +92,7 @@ namespace Runner
 
 		public void CardHovered(RunnerCardDisplay card)
 		{
-			if (_dragging)
+			if (HasSelection)
 			{
 				return;
 			}
@@ -105,7 +103,7 @@ namespace Runner
 
 		public void CardUnhovered(RunnerCardDisplay card)
 		{
-			if (_dragging)
+			if (HasSelection)
 			{
 				return;
 			}
@@ -117,21 +115,38 @@ namespace Runner
 			}
 		}
 
-		public void CardSelected(RunnerCardDisplay card)
-		{
+		public bool HasSelection => _processingCard != null;
 
+		public bool CardSelected(RunnerCardDisplay card)
+		{
+			if (HasSelection)
+			{
+				_processingCard.UnSelect();
+				_processingCard = null;
+				_manager.OnCardDeselected();
+				if (card == _hovered)
+				{
+					Resize();
+					return false;
+				}
+				CardUnhovered(_hovered);
+				CardHovered(card);
+			}
+			_processingCard = card;
+			_manager.OnCardSelected(card);
+			return true;
 		}
 
 		public void CardDragged(RunnerCardDisplay card)
 		{
-			_dragging = true;
-			_processingCard = card;
-			_onDragCallback.Invoke(card.Data);
+			//_dragging = true;
+			//_processingCard = card;
+			//_onDragCallback.Invoke(card.Data);
 		}
 		public void CardDropped(RunnerCardDisplay card)
 		{
-			_dragging = false;
-			_onDropCallback.Invoke(card.Data);
+			//_dragging = false;
+			//_onDropCallback.Invoke(card.Data);
 		}
 
 		protected void Resize()

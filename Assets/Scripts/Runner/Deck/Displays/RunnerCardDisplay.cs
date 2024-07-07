@@ -23,6 +23,7 @@ namespace Runner
 		[SerializeField] private TextMeshProUGUI _strength;
 		[SerializeField] private TextMeshProUGUI _cost;
 		[SerializeField] private Image _color;
+		[SerializeField] private GameObject _selectedIndicator;
 
 		[SerializeField] private Color _blue;
 		[SerializeField] private Color _green;
@@ -47,6 +48,8 @@ namespace Runner
 		private Vector3 _lastRotationTarget = Vector3.zero;
 		private float _normalZRotation = 0f;
 
+		private bool _selected = false;
+
 		private void Awake()
 		{
 			_baseSize = transform.localScale;
@@ -66,6 +69,7 @@ namespace Runner
 			_strength.text = card.CardStrength.ToString();
 			_cost.text = card.Cost.ToString();
 			_color.color = GetColor(card);
+			_selectedIndicator.SetActive(false);
 
 		}
 
@@ -114,8 +118,17 @@ namespace Runner
 
 		private void OnMouseUpAsButton()
 		{
-			Debug.Log("selected");
-			_handController.CardSelected(this);
+			if (_handController.CardSelected(this))
+			{
+				_selected = true;
+				_selectedIndicator.SetActive(_selected);
+			}
+		}
+
+		public void UnSelect()
+		{
+			_selected = false;
+			_selectedIndicator.SetActive(_selected);
 		}
 
 		private void OnMouseDown()

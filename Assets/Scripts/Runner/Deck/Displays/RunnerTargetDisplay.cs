@@ -17,8 +17,9 @@ namespace Runner
 		[SerializeField] private RunnerTargetData _data;
 
 		public RunnerTargetData Data => _data;
+		private RunnerTargetManager _manager;
 
-		private bool _hasCard;
+		private bool _isTargeted;
 		private bool _hovered;
 		private void Start()
 		{
@@ -26,8 +27,9 @@ namespace Runner
 			_targetedIndicator.SetActive(false);
 		}
 
-		public void Setup(RunnerTargetData data, Vector3 worldPosition)
+		public void Setup(RunnerTargetData data, Vector3 worldPosition, RunnerTargetManager manager)
 		{
+			_manager = manager;
 			_data = data;
 			transform.position = worldPosition;
 			_strengthIndicator.Setup(data);
@@ -39,13 +41,43 @@ namespace Runner
 			{
 				return;
 			}
-			_hasCard = true;
+			_isTargeted = true;
 			_validTargetIndicator.SetActive(true);
+		}
+
+		public void OnCardSelected(RunnerCardData card)
+		{
+			if (!card.CanPlay(_data))
+			{
+				return;
+			}
+			_isTargeted = true;
+			_validTargetIndicator.SetActive(true);
+		}
+		public void OnCardDeselected()
+		{
+			_isTargeted = false;
+			_validTargetIndicator.SetActive(false);
+		}
+
+		private void OnMouseUpAsButton()
+		{
+			if (!_isTargeted)
+			{
+				return;
+			}
+			_manager.OnTargetSelected(_data);
+		}
+		public void OnTargetSelected()
+		{
+			_isTargeted = false;
+			MouseExit();
+			_validTargetIndicator.SetActive(false);
 		}
 
 		public bool OnCardDropped()
 		{
-			_hasCard = false;
+			_isTargeted = false;
 			var wasHovered = _hovered;
 			MouseExit();
 			_validTargetIndicator.SetActive(false);
@@ -54,7 +86,7 @@ namespace Runner
 
 		private void Update()
 		{
-			if (!_hasCard)
+			if (!_isTargeted)
 			{
 				return;
 			}

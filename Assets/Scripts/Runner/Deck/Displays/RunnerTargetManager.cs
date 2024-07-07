@@ -19,7 +19,7 @@ namespace Runner
 		[SerializeField] private List<Transform> _targetSlots = new List<Transform>();
 
 		private List<RunnerTargetDisplay> _targets = new List<RunnerTargetDisplay>();
-
+		private RunnerCardDisplayManager _cardManager;
 
 		private void Start()
 		{
@@ -38,18 +38,47 @@ namespace Runner
 				var slot = availableSlots.Pop();
 
 				var display = Instantiate(_displayTemplate, _displayTemplate.transform.parent);
-				display.Setup(targetData, slot.position);
+				display.Setup(targetData, slot.position, this);
 				display.gameObject.SetActive(true);
 				_targets.Add(display);
 			}
 		}
 
+		public void Register(RunnerCardDisplayManager cardManager)
+		{
+			_cardManager = cardManager;
+		}
+
+		public void OnTargetSelected(RunnerTargetData selected)
+		{
+			_cardManager.OnTargetSelected(selected);
+			foreach (var target in _targets)
+			{
+				target.OnTargetSelected();
+			}
+		}
 
 		public void OnCardDragged(RunnerCardData card)
 		{
 			foreach (var target in _targets)
 			{
 				target.OnCardDragged(card);
+			}
+		}
+
+		public void OnCardSelected(RunnerCardData card)
+		{
+			foreach (var target in _targets)
+			{
+				target.OnCardSelected(card);
+			}
+		}
+
+		public void OnCardDeselected()
+		{
+			foreach (var target in _targets)
+			{
+				target.OnCardDeselected();
 			}
 		}
 

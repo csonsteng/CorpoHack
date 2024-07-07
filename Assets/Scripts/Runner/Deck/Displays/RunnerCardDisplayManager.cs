@@ -22,12 +22,28 @@ namespace Runner
 		private void Awake()
 		{
 			_handData = _cardManager.Hand;
-			_handDisplay.Setup(_handData, _deckLocation, OnCardDragged, OnCardDropped);
+			_handDisplay.Setup(_handData, _deckLocation, this);
+			_targetManager.Register(this);
 		}
 
 		private void OnCardDragged(RunnerCardData card)
 		{
 			_targetManager.OnCardDragged(card);
+		}
+
+		public void OnCardSelected(RunnerCardDisplay card)
+		{
+			_targetManager.OnCardSelected(card.Data);
+		}
+		public void OnCardDeselected()
+		{
+			_targetManager.OnCardDeselected();
+		}
+
+		public void OnTargetSelected(RunnerTargetData target)
+		{
+			_cardManager.PlayCard(_handDisplay.ProcessingCard.Data, target);
+			_handDisplay.AnimateCardToTrash(_trashLocation.position);
 		}
 
 		private void OnCardDropped(RunnerCardData card)
