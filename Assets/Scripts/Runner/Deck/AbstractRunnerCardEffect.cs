@@ -11,6 +11,6 @@ namespace Runner.Deck.Effects
 
 		public abstract bool IsValidTarget(RunnerTargetData target);
 
-		public abstract void Activate(RunnerTargetData target, ICardManager manager);
+		public abstract void Activate(RunnerTargetData target, RunnerDeckManager manager);
 	}
 }

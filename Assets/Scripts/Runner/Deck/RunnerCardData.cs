@@ -22,7 +22,7 @@ namespace Runner.Deck
 		public RunnerTargetColor Color;
         public int CardStrength;
 
-		public void Play(RunnerTargetData target, ICardManager manager)
+		public void Play(RunnerTargetData target, RunnerDeckManager manager)
 		{
 			target.Damage(CardStrength); 
 			foreach (var effect in Effects)

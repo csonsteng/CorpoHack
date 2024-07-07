@@ -8,7 +8,7 @@ using LogicPuddle.Common;
 
 namespace Runner.Deck
 {
-    public class RunnerDeckManager : MonoBehaviour, ICardManager, ISerializable
+    public class RunnerDeckManager : MonoBehaviour, ISerializable
 	{
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();

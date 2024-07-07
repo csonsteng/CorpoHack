@@ -8,12 +8,10 @@ using LogicPuddle.Common;
 
 namespace Runner.Deck { 
 	[CreateAssetMenu(menuName = "Runner/Starting Deck")]
-	public class RunnerStartingDeck : UniqueScriptableObject, IDeckConfiguration
+	public class RunnerStartingDeck : UniqueScriptableObject
 	{
 		public Sprite BackingImage;
-		public Sprite Backing => BackingImage;
 		public string Name;
 		public List<RunnerCardData> Cards;
-
 	}
 }

@@ -9,7 +9,7 @@ namespace Runner.Deck.Effects
 	[CreateAssetMenu(menuName = "Runner/CardEffects/ShuffleTrashToDeck")]
 	public class ShuffleTrashToDeck : AbstractRunnerCardEffect
 	{
-		public override void Activate(RunnerTargetData target, ICardManager manager)
+		public override void Activate(RunnerTargetData target, RunnerDeckManager manager)
 		{
 			manager.ShuffleTrashIntoDeck();
 		}

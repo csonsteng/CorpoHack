@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace Runner
 {
-    public class RunnerCardDisplay : MonoBehaviour, IDraggableCard
+    public class RunnerCardDisplay : MonoBehaviour
 	{
 		[SerializeField] private Image _cardImage;
 
@@ -38,9 +38,11 @@ namespace Runner
 		private Vector3 _mouseOffset;
 		private Vector3 _dragStartPosition;
 
-		private HandDisplayController _handController;
+		private RunnerHandDisplay _handController;
+		private RunnerCardData _data;
 		public float BaseWidth => _baseSize.x;
 		public float CardThickness => _baseSize.z;
+		public RunnerCardData Data => _data;
 
 		private Vector3 _lastRotationTarget = Vector3.zero;
 		private float _normalZRotation = 0f;
@@ -51,6 +53,7 @@ namespace Runner
 		}
 		public void Setup(RunnerCardData card, Vector3 position)
 		{
+			_data = card;
 			_cardImage.sprite = card.Sprite;
 			_name.text = card.Name;
 			_description.text = card.Description;
@@ -96,7 +99,7 @@ namespace Runner
 			TweenRotation(new Vector3(0f, 0f, _normalZRotation), duration);
 		}
 
-		public void Register(HandDisplayController controller)
+		public void Register(RunnerHandDisplay controller)
 		{
 			_handController = controller;
 		}
@@ -107,6 +110,12 @@ namespace Runner
 		private void OnMouseExit()
 		{
 			_handController.CardUnhovered(this);
+		}
+
+		private void OnMouseUpAsButton()
+		{
+			Debug.Log("selected");
+			_handController.CardSelected(this);
 		}
 
 		private void OnMouseDown()
