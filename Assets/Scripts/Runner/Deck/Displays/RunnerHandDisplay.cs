@@ -74,6 +74,7 @@ namespace Runner
 			_processingCard.TurnFaceDown(_animationDuration);
 			_cards.Remove(_processingCard);
 			_processingCard = null;
+			_hovered = null;
 			Resize();
 		}
 
@@ -198,7 +199,6 @@ namespace Runner
 			var hoveredLocation = n;
 			var lastXPosition = 0f;
 			var thickness = _cards[0].CardThickness;
-
 			for (var i = 0; i < n; i++)
 			{
 				var card = _cards[i];

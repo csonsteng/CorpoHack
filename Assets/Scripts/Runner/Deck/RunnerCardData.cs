@@ -13,18 +13,15 @@ namespace Runner.Deck
 	{
 		public string Name;
 		public string Description;
-		public int Cost;
 		public Sprite Sprite;
 
 		public RunnerCardRarity Rarity;
 
 		public List<AbstractRunnerCardEffect> Effects;
-		public RunnerTargetColor Color;
-        public int CardStrength;
 
 		public void Play(RunnerTargetData target, RunnerDeckManager manager)
 		{
-			target.Damage(CardStrength); 
+			target.Damage(); 
 			foreach (var effect in Effects)
 			{
 				effect.Activate(target, manager);
@@ -35,10 +32,7 @@ namespace Runner.Deck
 		{
 			if (target.Strength > 0)
 			{
-				if(Color == RunnerTargetColor.None || Color == target.Color)
-				{
-					return true;	// at the very least can damang
-				}
+				return true;	// at the very least can damage
 			}
 			foreach (var effect in Effects)
 			{

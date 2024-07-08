@@ -11,6 +11,16 @@ namespace Runner.Deck.Effects
 
 		public abstract bool IsValidTarget(RunnerTargetData target);
 
-		public abstract void Activate(RunnerTargetData target, RunnerDeckManager manager);
+
+		public void Activate(RunnerTargetData target, RunnerDeckManager manager)
+		{
+			if (!IsValidTarget(target))
+			{
+				return;
+			}
+			OnActivate(target, manager);
+		}
+
+		protected abstract void OnActivate(RunnerTargetData target, RunnerDeckManager manager);
 	}
 }

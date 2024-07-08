@@ -27,11 +27,10 @@ namespace Runner
 			_targetedIndicator.SetActive(false);
 		}
 
-		public void Setup(RunnerTargetData data, Vector3 worldPosition, RunnerTargetManager manager)
+		public void Setup(RunnerTargetData data, RunnerTargetManager manager)
 		{
 			_manager = manager;
 			_data = data;
-			transform.position = worldPosition;
 			_strengthIndicator.Setup(data);
 		}
 

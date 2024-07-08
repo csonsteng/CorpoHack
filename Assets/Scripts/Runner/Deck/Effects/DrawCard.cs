@@ -9,11 +9,11 @@ namespace Runner.Deck.Effects
 	[CreateAssetMenu(menuName = "Runner/CardEffects/DrawCard")]
 	public class DrawCard : AbstractRunnerCardEffect
 	{
-		public override void Activate(RunnerTargetData target, RunnerDeckManager manager)
+		protected override void OnActivate(RunnerTargetData target, RunnerDeckManager manager)
 		{
 			manager.DrawCard();
 		}
 
-		public override bool IsValidTarget(RunnerTargetData target) => false;
+		public override bool IsValidTarget(RunnerTargetData target) => target.TargetType == RunnerTargetType.None;
 	}
 }

@@ -20,15 +20,7 @@ namespace Runner
 		[SerializeField] private TextMeshProUGUI _name;
 		[SerializeField] private TextMeshProUGUI _description;
 
-		[SerializeField] private TextMeshProUGUI _strength;
-		[SerializeField] private TextMeshProUGUI _cost;
-		[SerializeField] private Image _color;
 		[SerializeField] private GameObject _selectedIndicator;
-
-		[SerializeField] private Color _blue;
-		[SerializeField] private Color _green;
-		[SerializeField] private Color _red;
-		[SerializeField] private Color _colorless;
 
 		private Vector3 _baseSize;
 
@@ -66,23 +58,8 @@ namespace Runner
 			//_cardBacking.sprite = deckConfiguration.Backing;
 
 			// todo : card frame based on rarity?
-			_strength.text = card.CardStrength.ToString();
-			_cost.text = card.Cost.ToString();
-			_color.color = GetColor(card);
 			_selectedIndicator.SetActive(false);
 
-		}
-
-		private Color GetColor(RunnerCardData card)
-		{
-			return card.Color switch
-			{
-				RunnerTargetColor.Blue => _blue,
-				RunnerTargetColor.Red => _red,
-				RunnerTargetColor.Green => _green,
-				_ => _colorless
-
-			};
 		}
 
 		public void TurnFaceDown(float duration)
@@ -178,7 +155,6 @@ namespace Runner
 			{
 				_positionTween.Kill();
 			}
-
 			_positionTween = transform.DOLocalMove(position, duration);
 		}
 		public void RotateInPlane(float rotation, float duration)

@@ -15,3 +15,7 @@ MonoBehaviour:
   _managedObjects:
   - {fileID: 11400000, guid: cfd215b7e155676479adf81dae73c05b, type: 2}
   - {fileID: 11400000, guid: 7d0c91b427cb6a04ebe6a3423d89baec, type: 2}
+  - {fileID: 11400000, guid: faa12a1aa2d87de4d9cdcddc35d53c78, type: 2}
+  - {fileID: 11400000, guid: db10cbb2ce3f4274e8cd98ef178d6aef, type: 2}
+  - {fileID: 11400000, guid: 58c5ba68ee168404fa15c34d24ff25ef, type: 2}
+  - {fileID: 11400000, guid: 2490e334b52f8464f8e79a048e07f10a, type: 2}

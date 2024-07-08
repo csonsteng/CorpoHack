@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LogicPuddle.Common;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Runner.Deck
 {
@@ -48,7 +49,21 @@ namespace Runner.Deck
 			}
 			Trash.Add(card);    // add to trash before play so GC can collect itself
 			card.Play(target, this);
+			AutofillHand();
+		}
 
+		public void Discard(RunnerCardData card)
+		{
+			if (!Hand.Remove(card))
+			{
+				return;
+			}
+			Trash.Add(card);
+			AutofillHand();
+		}
+
+		private void AutofillHand()
+		{
 			while (Hand.GetAll().Count < _handSize && DrawCard())
 			{
 				// fill back up to handsize

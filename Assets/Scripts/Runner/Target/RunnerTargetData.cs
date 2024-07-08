@@ -22,12 +22,18 @@ namespace Runner.Target
 
 		private Action StrengthChanged;
 
-		public void Setup(RunnerTargetConfiguration configuration)
+		public RunnerTargetData() { }
+
+		public RunnerTargetData(RunnerTargetConfiguration configuration)
 		{
 			_configuration = configuration;
+			if(TargetType == RunnerTargetType.None)
+			{
+				return;
+			}
 			// todo: build these out based on target type, and difficulty
-			Color = (RunnerTargetColor)Random.Range(0, System.Enum.GetValues(typeof(RunnerTargetColor)).Length);
-			OriginalStrength = Random.Range(2, 6);
+			Color = (RunnerTargetColor)Random.Range(1, System.Enum.GetValues(typeof(RunnerTargetColor)).Length);
+			OriginalStrength = Random.Range(3, 5);
 			Strength = OriginalStrength;
 		}
 
@@ -36,7 +42,7 @@ namespace Runner.Target
 			StrengthChanged += onStrengthChange;
 		}
 
-		public bool Damage(int amount)
+		public bool Damage(int amount = 1)
 		{
 			Strength = Mathf.Max(Strength - amount, 0);
 			StrengthChanged?.Invoke();
