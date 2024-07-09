@@ -16,6 +16,7 @@ namespace Runner.Target
 
 		public RunnerTargetDisplay Block1 => _block1;
 		public RunnerTargetDisplay Block2 => _block2;
+		public bool IsActive => Block1.Data.Strength > 0 || Block2.Data.Strength > 0;
 		public void Setup(RunnerTargetManager manager)
 		{
 			_firewallEffect.gameObject.SetActive(true);

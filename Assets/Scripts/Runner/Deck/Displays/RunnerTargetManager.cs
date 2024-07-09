@@ -51,8 +51,6 @@ namespace Runner
 				_targets.Add(display);
 			}
 			_firewall.Setup(this);
-			_targets.Add(_firewall.Block1);
-			_targets.Add(_firewall.Block2);
 		}
 
 		public void Register(RunnerCardDisplayManager cardManager)
@@ -64,6 +62,13 @@ namespace Runner
 		{
 			_playCardNoTargetButton.SetActive(false);
 			_cardManager.OnTargetSelected(selected);
+
+			if (_firewall.IsActive)
+			{
+				_firewall.Block1.OnTargetSelected();
+				_firewall.Block2.OnTargetSelected();
+				return;
+			}
 			foreach (var target in _targets)
 			{
 				target.OnTargetSelected();
@@ -88,6 +93,13 @@ namespace Runner
 			{
 				_playCardNoTargetButton.SetActive(true);
 			}
+
+			if (_firewall.IsActive)
+			{
+				_firewall.Block1.OnCardSelected(card);
+				_firewall.Block2.OnCardSelected(card);
+				return;
+			}
 			foreach (var target in _targets)
 			{
 				target.OnCardSelected(card);
@@ -97,6 +109,13 @@ namespace Runner
 		public void OnCardDeselected()
 		{
 			_playCardNoTargetButton.SetActive(false);
+
+			if (_firewall.IsActive)
+			{
+				_firewall.Block1.OnCardDeselected();
+				_firewall.Block2.OnCardDeselected();
+				return;
+			}
 			foreach (var target in _targets)
 			{
 				target.OnCardDeselected();
