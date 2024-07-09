@@ -14,12 +14,18 @@ namespace Runner
 	{
 
 		[SerializeField] private RunnerTargetDisplay _nodeDisplayTemplate;
-		[SerializeField] private List<RunnerTargetConfiguration> nodeConfigurations = new List<RunnerTargetConfiguration>();
+		[SerializeField] private List<RunnerTargetConfiguration> _nodeConfigurations = new List<RunnerTargetConfiguration>();
+
+
+		[SerializeField] private RunnerTargetDisplay _iceDisplayTemplate;
+		[SerializeField] private List<RunnerTargetConfiguration> _iceConfigurations = new List<RunnerTargetConfiguration>();
+
 
 		[SerializeField] private GameObject _playCardNoTargetButton;
 		[SerializeField] private RunnerTargetConfiguration _targetlessConfiguration;
 
 		[SerializeField] private List<Transform> _nodeSlots = new List<Transform>();
+		[SerializeField] private List<Transform> _iceSlots = new List<Transform>();
 
 		[SerializeField] private FirewallController _firewall;
 		private List<RunnerTargetDisplay> _targets = new List<RunnerTargetDisplay>();
@@ -31,11 +37,18 @@ namespace Runner
 		{
 			_playCardNoTargetButton.SetActive(false);
 			_targetlessTarget = new RunnerTargetData(_targetlessConfiguration);
+			SetupNodes();
+			SetupICE();
+			_firewall.Setup(this);
+		}
+
+		private void SetupNodes()
+		{
 			var availableSlots = new List<Transform>();
 			availableSlots.AddRange(_nodeSlots);
 			availableSlots.Shuffle();
 			_nodeDisplayTemplate.gameObject.SetActive(false);
-			foreach (var target in nodeConfigurations)
+			foreach (var target in _nodeConfigurations)
 			{
 				if (availableSlots.Count == 0)
 				{
@@ -50,7 +63,28 @@ namespace Runner
 				display.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 				_targets.Add(display);
 			}
-			_firewall.Setup(this);
+		}
+		private void SetupICE()
+		{
+			var availableSlots = new List<Transform>();
+			availableSlots.AddRange(_iceSlots);
+			availableSlots.Shuffle();
+			_iceDisplayTemplate.gameObject.SetActive(false);
+			foreach (var target in _iceConfigurations)
+			{
+				if (availableSlots.Count == 0)
+				{
+					break;
+				}
+				var targetData = new RunnerTargetData(target);
+				var slot = availableSlots.Pop();
+
+				var display = Instantiate(_iceDisplayTemplate, slot.transform);
+				display.Setup(targetData, this);
+				display.gameObject.SetActive(true);
+				display.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+				_targets.Add(display);
+			}
 		}
 
 		public void Register(RunnerCardDisplayManager cardManager)
@@ -63,10 +97,10 @@ namespace Runner
 			_playCardNoTargetButton.SetActive(false);
 			_cardManager.OnTargetSelected(selected);
 
+			_firewall.Block1.OnTargetSelected();
+			_firewall.Block2.OnTargetSelected();
 			if (_firewall.IsActive)
 			{
-				_firewall.Block1.OnTargetSelected();
-				_firewall.Block2.OnTargetSelected();
 				return;
 			}
 			foreach (var target in _targets)
