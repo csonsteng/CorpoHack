@@ -12,12 +12,26 @@ namespace Runner
 {
 	public class RunnerTargetManager : MonoBehaviour
 	{
+		public static RunnerTargetManager Instance => GetInstance();
+
+		private static RunnerTargetManager GetInstance()
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<RunnerTargetManager>();
+			}
+			return _instance;
+		}
+		private static RunnerTargetManager _instance;
+
+
 
 		[SerializeField] private RunnerTargetDisplay _nodeDisplayTemplate;
 		[SerializeField] private List<RunnerTargetConfiguration> _nodeConfigurations = new List<RunnerTargetConfiguration>();
 
 
-		[SerializeField] private RunnerTargetDisplay _iceDisplayTemplate;
+		[SerializeField] private IceDisplay _iceDisplayTemplate;
+		[SerializeField] private IceList _iceList;
 		[SerializeField] private List<RunnerTargetConfiguration> _iceConfigurations = new List<RunnerTargetConfiguration>();
 
 
@@ -29,6 +43,7 @@ namespace Runner
 
 		[SerializeField] private FirewallController _firewall;
 		private List<RunnerTargetDisplay> _targets = new List<RunnerTargetDisplay>();
+		private List<IceData> _iceData = new List<IceData>();
 		private RunnerCardDisplayManager _cardManager;
 
 		private RunnerTargetData _targetlessTarget;
@@ -36,6 +51,7 @@ namespace Runner
 		private void Start()
 		{
 			_playCardNoTargetButton.SetActive(false);
+			DetectionTracker.Instance.Register(DetectionLevelChanged);
 			_targetlessTarget = new RunnerTargetData(_targetlessConfiguration);
 			SetupNodes();
 			SetupICE();
@@ -55,6 +71,7 @@ namespace Runner
 					break;
 				}
 				var targetData = new RunnerTargetData(target);
+				RegisterWithTargetData(targetData);
 				var slot = availableSlots.Pop();
 
 				var display = Instantiate(_nodeDisplayTemplate, slot.transform);
@@ -70,13 +87,19 @@ namespace Runner
 			availableSlots.AddRange(_iceSlots);
 			availableSlots.Shuffle();
 			_iceDisplayTemplate.gameObject.SetActive(false);
+
+			var iceOptions = _iceList.GetAll();
 			foreach (var target in _iceConfigurations)
 			{
 				if (availableSlots.Count == 0)
 				{
 					break;
 				}
-				var targetData = new RunnerTargetData(target);
+				iceOptions.Shuffle();
+				var iceType = iceOptions[0];
+				var targetData = new IceData(target, iceType);
+				RegisterWithTargetData(targetData);
+				_iceData.Add(targetData);
 				var slot = availableSlots.Pop();
 
 				var display = Instantiate(_iceDisplayTemplate, slot.transform);
@@ -87,9 +110,63 @@ namespace Runner
 			}
 		}
 
+		private void RegisterWithTargetData(RunnerTargetData targetData)
+		{
+			targetData.RegisterListener(TargetStrengthChanged);
+		}
+
+		private void TargetStrengthChanged(RunnerTargetData target)
+		{
+			if(target.Strength > 0)
+			{
+				return;
+			}
+			if(target is IceData iceData)
+			{
+				foreach (var ice in _iceData)
+				{
+					ice.IceBroken(iceData);
+					ice.IcePinged(iceData);
+				}
+				return;
+			}
+
+			foreach (var ice in _iceData)
+			{
+				ice.NodeBroken();
+				ice.NodePinged();
+			}
+			return;
+		}
+
+		private void DetectionLevelChanged(int level)
+		{
+			if (level == 15)
+			{
+				foreach (var ice in _iceData)
+				{
+					ice.DetectionAt15();
+				}
+			}
+		}
+
+		public IEnumerable<RunnerTargetData> GetAllData()
+		{
+			foreach(var display in _targets)
+			{
+				yield return display.Data;
+			}
+		}
+
 		public void Register(RunnerCardDisplayManager cardManager)
 		{
 			_cardManager = cardManager;
+		}
+
+		public void ReEnableFirewall()
+		{
+			_firewall.Block1.Data.SetStrength(_firewall.Block1.Data.OriginalStrength);
+			_firewall.Block2.Data.SetStrength(_firewall.Block2.Data.OriginalStrength);
 		}
 
 		public void OnTargetSelected(RunnerTargetData selected)

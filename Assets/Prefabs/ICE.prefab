@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3189957726178604052}
   - component: {fileID: 2040213247308153728}
   - component: {fileID: 798592803911253326}
-  - component: {fileID: 7227590130545002155}
+  - component: {fileID: 4590397761505585970}
   - component: {fileID: 429770542094201620}
   m_Layer: 0
   m_Name: ICE
@@ -151,7 +151,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7227590130545002155
+--- !u!114 &4590397761505585970
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1441914963530862904}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7638310a182ec5e489ea7345f984f4a3, type: 3}
+  m_Script: {fileID: 11500000, guid: ca5b711878666254e9136d6d6c5152bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _strengthIndicator: {fileID: 3335842613592080068}

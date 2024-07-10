@@ -29,13 +29,20 @@ public class RunnerTargetIndicator : MonoBehaviour
 			}
 			_lights[i].SetActive(false);
 		}
-		OnStrengthChanged();
+		OnStrengthChanged(data);
 	}
 
-	private void OnStrengthChanged()
+	private void OnStrengthChanged(RunnerTargetData data)
 	{
 		var material = GetTargetColorMaterial();
-		for (var i = 0; i < _lightMeshes.Count; i++)
+		var currentCount = _lightMeshes.Count;
+		while (_data.Strength > currentCount)
+		{
+			_lights[currentCount].SetActive(true);
+			_lightMeshes.Add(_lights[currentCount].transform.GetChild(0).GetComponent<MeshRenderer>());
+			currentCount++;
+		}
+		for (var i = 0; i < currentCount; i++)
 		{
 			if (_data.Strength > i)
 			{

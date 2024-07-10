@@ -11,6 +11,18 @@ namespace Runner.Deck
 {
     public class RunnerDeckManager : MonoBehaviour, ISerializable
 	{
+		public static RunnerDeckManager Instance => GetInstance();
+
+		private static RunnerDeckManager GetInstance()
+		{
+			if (_instance == null)
+			{
+				_instance = FindObjectOfType<RunnerDeckManager>();
+			}
+			return _instance;
+		}
+		private static RunnerDeckManager _instance;
+
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
@@ -60,6 +72,14 @@ namespace Runner.Deck
 			}
 			Trash.Add(card);
 			AutofillHand();
+		}
+
+		public RunnerCardData RandomCard()
+		{
+			var currentHand = new List<RunnerCardData>();
+			currentHand.AddRange(Hand.GetAll());
+			currentHand.Shuffle();
+			return currentHand[0];
 		}
 
 		private void AutofillHand()

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LogicPuddle.Common {
     public class UniqueScriptableObjectLinker : MonoBehaviour
     {
-        [SerializeField] private List<IUniqueScriptableObjectList> _lists = new();
+        [SerializeField] private List<IUniqueScriptableObjectList> _lists = new List<IUniqueScriptableObjectList>();
 
 		private Dictionary<System.Type, IUniqueScriptableObjectList> _listDictionary;
 

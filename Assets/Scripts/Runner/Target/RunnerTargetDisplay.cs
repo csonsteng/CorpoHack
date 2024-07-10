@@ -14,7 +14,7 @@ namespace Runner
 		[SerializeField] private GameObject _validTargetIndicator;
 		[SerializeField] private GameObject _targetedIndicator;
 
-		[SerializeField] private RunnerTargetData _data;
+		private RunnerTargetData _data;
 
 		public RunnerTargetData Data => _data;
 		private RunnerTargetManager _manager;

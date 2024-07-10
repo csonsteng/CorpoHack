@@ -21,7 +21,8 @@ namespace Runner.Deck
 
 		public void Play(RunnerTargetData target, RunnerDeckManager manager)
 		{
-			target.Damage(); 
+			target.Damage();
+			DetectionTracker.Instance.IncreaseDetection(1);
 			foreach (var effect in Effects)
 			{
 				effect.Activate(target, manager);

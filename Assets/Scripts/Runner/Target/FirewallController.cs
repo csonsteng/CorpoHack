@@ -31,11 +31,14 @@ namespace Runner.Target
 			data.RegisterListener(OnStrengthUpdated);
 		}
 
-		private void OnStrengthUpdated()
+		private void OnStrengthUpdated(RunnerTargetData data)
 		{
 			if(_block1.Data.Strength <= 0 && _block2.Data.Strength <= 0)
 			{
 				_firewallEffect.Stop();
+			} else if (!_firewallEffect.isPlaying)
+			{
+				_firewallEffect.Play();
 			}
 		}
 	}
