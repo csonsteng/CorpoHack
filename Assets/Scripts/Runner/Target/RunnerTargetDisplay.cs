@@ -85,35 +85,34 @@ namespace Runner
 
 		private void Update()
 		{
-			if (!_isTargeted)
+			if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out var hit))
 			{
+				MouseExit();
 				return;
 			}
 
-			var hits = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition));
-			if (hits == null)
+			if (hit.collider.gameObject == gameObject)
 			{
-				return;
-			}
-			foreach (var hit in hits)
-			{
-				if (hit.collider.gameObject != gameObject)
-				{
-					continue;
-				}
 				MouseEnter();
 				return;
+
 			}
 			MouseExit();
 		}
 
 		private void MouseEnter()
 		{
+			TargetTooltip.Instance.Show(_data);
+			if (!_isTargeted)
+			{
+				return;
+			}
 			_targetedIndicator.SetActive(true);
 			_hovered = true;
 		}
 		private void MouseExit()
 		{
+			TargetTooltip.Instance.Hide(_data);
 			_targetedIndicator.SetActive(false);
 			_hovered = false;
 		}

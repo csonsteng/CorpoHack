@@ -13,6 +13,7 @@ namespace Runner.Target
 		[SerializeField] private RunnerTargetDisplay _block2;
 
 		[SerializeField] private ParticleSystem _firewallEffect;
+		[SerializeField] private GameObject _blocker;
 
 		public RunnerTargetDisplay Block1 => _block1;
 		public RunnerTargetDisplay Block2 => _block2;
@@ -20,6 +21,7 @@ namespace Runner.Target
 		public void Setup(RunnerTargetManager manager)
 		{
 			_firewallEffect.gameObject.SetActive(true);
+			_blocker.SetActive(true);
 			SetupBlockData(_block1, manager);
 			SetupBlockData(_block2, manager);
 		}
@@ -36,9 +38,11 @@ namespace Runner.Target
 			if(_block1.Data.Strength <= 0 && _block2.Data.Strength <= 0)
 			{
 				_firewallEffect.Stop();
+				_blocker.SetActive(false);
 			} else if (!_firewallEffect.isPlaying)
 			{
 				_firewallEffect.Play();
+				_blocker.SetActive(true);
 			}
 		}
 	}
