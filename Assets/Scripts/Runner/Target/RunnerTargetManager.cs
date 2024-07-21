@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Runner
 {
@@ -126,7 +127,6 @@ namespace Runner
 				foreach (var ice in _iceData)
 				{
 					ice.IceBroken(iceData);
-					ice.IcePinged(iceData);
 				}
 				return;
 			}
@@ -134,7 +134,6 @@ namespace Runner
 			foreach (var ice in _iceData)
 			{
 				ice.NodeBroken();
-				ice.NodePinged();
 			}
 			return;
 		}
@@ -147,6 +146,24 @@ namespace Runner
 				{
 					ice.DetectionAt15();
 				}
+			}
+		}
+
+		public void PingTarget(RunnerTargetData target)
+		{
+			target.Ping();
+			if (target is IceData iceData)
+			{
+				foreach (var ice in _iceData)
+				{
+					ice.IcePinged(iceData);
+				}
+				return;
+			}
+
+			foreach (var ice in _iceData)
+			{
+				ice.NodePinged();
 			}
 		}
 

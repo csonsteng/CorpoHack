@@ -74,10 +74,15 @@ public class TargetTooltip : MonoBehaviour
 				SetupLine(_description, "The firewall is composed of two security measures. Once both are broken, the firewall will disable and allow access to other targets.");
 				break;
 			case RunnerTargetType.ICE:
+				if (target is not IceData iceData)
+				{
+					Debug.LogError("Non Ice Data target has Ice target type");
+					break;
+				}
 				SetupLine(_title, "ICE");
-				SetupLine(_type, "unknown");
-				SetupLine(_trigger, "unknown");
-				SetupLine(_description, "Intrusion Countermeasures Electronics or ICE tries to prevent you from accessing nodes. They each have a trigger and an effect.");
+				SetupLine(_type, iceData.Type());
+				SetupLine(_trigger, iceData.Trigger());
+				SetupLine(_description, iceData.Description());
 				break;
 			case RunnerTargetType.Node:
 				SetupLine(_title, "Node");

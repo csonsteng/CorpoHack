@@ -16,7 +16,52 @@ public class IceData : RunnerTargetData
 		_effect = iceType;
 		_trigger = _effect.GetRandomValidTrigger();
 		Debug.Log($"setup {_effect.Name} with {_trigger} trigger");
+	}
 
+
+	public string Type()
+	{
+		if (!Pinged)
+		{
+			return "Unknown";
+		}
+		return _effect.Name;
+	}
+
+	public string Trigger()
+	{
+		if (!Pinged)
+		{
+			return "Unknown";
+		}
+		switch ( _trigger )
+		{
+			case IceTrigger.SelfPinged:
+				return "I'm Pinged";
+			case IceTrigger.OtherPinged:
+				return "Other ICE Pinged";
+			case IceTrigger.NodePinged:
+				return "Node Pinged";
+			case IceTrigger.SelfBroken:
+				return "I'm Broken";
+			case IceTrigger.OtherBroken:
+				return "Other ICE Broken";
+			case IceTrigger.NodeBroken:
+				return "Node Broken";
+			case IceTrigger.DetectionAt15:
+				return "Detection Reaches 15";
+			default:
+				return "Unknown";
+		}
+	}
+
+	public string Description()
+	{
+		if (!Pinged)
+		{
+			return "Intrusion Countermeasures Electronics or ICE tries to prevent you from accessing nodes. They each have a trigger and an effect.";
+		}
+		return _effect.Description;
 	}
 
 	public void IcePinged(IceData iceData)

@@ -31,7 +31,21 @@ namespace Runner
 		{
 			_manager = manager;
 			_data = data;
+			data.RegisterListener(OnStrengthChange);
 			_strengthIndicator.Setup(data);
+		}
+
+		private void OnStrengthChange(RunnerTargetData data)
+		{
+			if (data.IsBroken)
+			{
+				OnSecurityBroken();
+			}
+		}
+
+		protected virtual void OnSecurityBroken()
+		{
+
 		}
 
 		public void OnCardDragged(RunnerCardData card)

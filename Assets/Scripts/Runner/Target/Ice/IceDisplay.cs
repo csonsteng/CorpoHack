@@ -6,5 +6,11 @@ namespace Runner.Target
 {
     public class IceDisplay : RunnerTargetDisplay
     {
+        [SerializeField] private Animator _animator;
+		protected override void OnSecurityBroken()
+		{
+			base.OnSecurityBroken();
+			_animator.SetTrigger("Melt");
+		}
 	}
 }

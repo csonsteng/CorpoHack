@@ -16,6 +16,9 @@ namespace Runner.Target
 		public RunnerTargetType TargetType => _configuration.TargetType;
 		protected RunnerTargetConfiguration _configuration;
 		public RunnerTargetColor Color { get; private set; }
+		public bool Pinged { get; private set; }
+
+		public bool IsBroken => Strength <= 0;
 
 		public int OriginalStrength { get; private set; }
 		public int Strength { get; private set; }
@@ -35,6 +38,11 @@ namespace Runner.Target
 			Color = (RunnerTargetColor)Random.Range(1, System.Enum.GetValues(typeof(RunnerTargetColor)).Length);
 			OriginalStrength = Random.Range(3, 6);
 			Strength = OriginalStrength;
+		}
+
+		public void Ping()
+		{
+			Pinged = true;
 		}
 
 		public void RegisterListener(Action<RunnerTargetData> onStrengthChange)
@@ -62,6 +70,7 @@ namespace Runner.Target
 			Color = (RunnerTargetColor)System.Convert.ToInt32(data["color"]);
 			Strength = System.Convert.ToInt32(data["strength"]);
 			OriginalStrength = System.Convert.ToInt32(data["original-strength"]);
+			Pinged = System.Convert.ToBoolean(data["pinged"]);
 		}
 
 		public virtual Dictionary<string, object> Serialize()
@@ -71,7 +80,8 @@ namespace Runner.Target
 				{ "key", _configuration.UniqueID },
 				{ "color", (int)Color },
 				{ "strength", Strength },
-				{ "original-strength", OriginalStrength }
+				{ "original-strength", OriginalStrength },
+				{ "pinged", Pinged }
 			};
 			return data;
 		}

@@ -166,6 +166,7 @@ MonoBehaviour:
   _strengthIndicator: {fileID: 3335842613592080068}
   _validTargetIndicator: {fileID: 4089476415490689021}
   _targetedIndicator: {fileID: 250463715758397781}
+  _animator: {fileID: 429770542094201620}
 --- !u!95 &429770542094201620
 Animator:
   serializedVersion: 5
