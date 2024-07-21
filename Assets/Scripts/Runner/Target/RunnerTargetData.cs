@@ -16,7 +16,7 @@ namespace Runner.Target
 		public RunnerTargetType TargetType => _configuration.TargetType;
 		protected RunnerTargetConfiguration _configuration;
 		public RunnerTargetColor Color { get; private set; }
-		public bool Pinged { get; private set; }
+		public bool Pinged { get; protected set; }
 
 		public bool IsBroken => Strength <= 0;
 

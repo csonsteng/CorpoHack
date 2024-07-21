@@ -19,13 +19,13 @@ public class IceData : RunnerTargetData
 	}
 
 
-	public string Type()
+	public string Title()
 	{
 		if (!Pinged)
 		{
-			return "Unknown";
+			return "ICE: ???";
 		}
-		return _effect.Name;
+		return $"ICE: {_effect.Name}";
 	}
 
 	public string Trigger()
@@ -66,6 +66,10 @@ public class IceData : RunnerTargetData
 
 	public void IcePinged(IceData iceData)
 	{
+		if(Strength <= 0)
+		{
+			return;
+		}
 		if (iceData == this)
 		{
 			if (_trigger == IceTrigger.SelfPinged)
@@ -89,6 +93,10 @@ public class IceData : RunnerTargetData
 			}
 			return;
 		}
+		if (Strength <= 0)
+		{
+			return;
+		}
 		if (_trigger == IceTrigger.OtherBroken)
 		{
 			_effect.OnTrigger();
@@ -96,6 +104,10 @@ public class IceData : RunnerTargetData
 	}
 	public void NodePinged()
 	{
+		if (Strength <= 0)
+		{
+			return;
+		}
 		if (_trigger == IceTrigger.NodePinged)
 		{
 			_effect.OnTrigger();
@@ -103,6 +115,10 @@ public class IceData : RunnerTargetData
 	}
 	public void NodeBroken()
 	{
+		if (Strength <= 0)
+		{
+			return;
+		}
 		if (_trigger == IceTrigger.NodeBroken)
 		{
 			_effect.OnTrigger();
@@ -110,6 +126,10 @@ public class IceData : RunnerTargetData
 	}
 	public void DetectionAt15()
 	{
+		if (Strength <= 0)
+		{
+			return;
+		}
 		if (_trigger == IceTrigger.DetectionAt15)
 		{
 			_effect.OnTrigger();

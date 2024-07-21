@@ -4,20 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TargetTooltip : MonoBehaviour
+public class TargetTooltip : Singleton<TargetTooltip>
 {
-	public static TargetTooltip Instance => GetInstance();
-
-	private static TargetTooltip GetInstance()
-	{
-		if (_instance == null)
-		{
-			_instance = FindObjectOfType<TargetTooltip>();
-		}
-		return _instance;
-	}
-	private static TargetTooltip _instance;
-
 	[SerializeField] private RectTransform _container;
 
 	[SerializeField] private TargetTooltipLine _title;
@@ -62,33 +50,38 @@ public class TargetTooltip : MonoBehaviour
 			Debug.LogError("null target");
 			return;
 		}
-		SetupLine(_status, "secured");
 		SetupLine(_color, _target.Color.ToString());
 		SetupLine(_strength, _target.Strength.ToString());
+		SetupLine(_type);
 		switch (_target.TargetType)
 		{
 			case RunnerTargetType.Firewall:
+				SetupLine(_status, target.IsBroken ? "broken" : "secured");
 				SetupLine(_title, "Firewall");
-				SetupLine(_type);
 				SetupLine(_trigger);
 				SetupLine(_description, "The firewall is composed of two security measures. Once both are broken, the firewall will disable and allow access to other targets.");
 				break;
 			case RunnerTargetType.ICE:
+				SetupLine(_status, target.IsBroken ? "broken" : "secured");
 				if (target is not IceData iceData)
 				{
 					Debug.LogError("Non Ice Data target has Ice target type");
 					break;
 				}
-				SetupLine(_title, "ICE");
-				SetupLine(_type, iceData.Type());
+				SetupLine(_title, iceData.Title());
 				SetupLine(_trigger, iceData.Trigger());
 				SetupLine(_description, iceData.Description());
 				break;
 			case RunnerTargetType.Node:
-				SetupLine(_title, "Node");
-				SetupLine(_type, "unknown");
+				if (target is not NodeData nodeData)
+				{
+					Debug.LogError("Non Node Data target has Node target type");
+					break;
+				}
+				SetupLine(_title, nodeData.Title());
+				SetupLine(_status, nodeData.Status.ToString());
 				SetupLine(_trigger);
-				SetupLine(_description, "A node typical stores data. This could be incrimnating data, user data, a crypto wallet, or mundane data.");
+				SetupLine(_description, nodeData.Description());
 				break;
 		}
 	}

@@ -37,6 +37,7 @@ namespace Runner
 		}
 		public void OnCardDeselected()
 		{
+			_discardCardButton.SetActive(false);
 			_targetManager.OnCardDeselected();
 		}
 

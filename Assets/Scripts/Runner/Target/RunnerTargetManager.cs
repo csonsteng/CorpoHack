@@ -11,23 +11,10 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace Runner
 {
-	public class RunnerTargetManager : MonoBehaviour
+	public class RunnerTargetManager : Singleton<RunnerTargetManager>
 	{
-		public static RunnerTargetManager Instance => GetInstance();
-
-		private static RunnerTargetManager GetInstance()
-		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType<RunnerTargetManager>();
-			}
-			return _instance;
-		}
-		private static RunnerTargetManager _instance;
-
-
-
 		[SerializeField] private RunnerTargetDisplay _nodeDisplayTemplate;
+		[SerializeField] private NodeList _nodeList;
 		[SerializeField] private List<RunnerTargetConfiguration> _nodeConfigurations = new List<RunnerTargetConfiguration>();
 
 
@@ -65,13 +52,17 @@ namespace Runner
 			availableSlots.AddRange(_nodeSlots);
 			availableSlots.Shuffle();
 			_nodeDisplayTemplate.gameObject.SetActive(false);
+
+			var ndoeOptions = _nodeList.GetAll();
 			foreach (var target in _nodeConfigurations)
 			{
 				if (availableSlots.Count == 0)
 				{
 					break;
 				}
-				var targetData = new RunnerTargetData(target);
+				ndoeOptions.Shuffle();
+				var nodeType = ndoeOptions[0];
+				var targetData = new NodeData(target, nodeType);
 				RegisterWithTargetData(targetData);
 				var slot = availableSlots.Pop();
 
@@ -131,9 +122,12 @@ namespace Runner
 				return;
 			}
 
-			foreach (var ice in _iceData)
+			if (target.TargetType == RunnerTargetType.Node)
 			{
-				ice.NodeBroken();
+				foreach (var ice in _iceData)
+				{
+					ice.NodeBroken();
+				}
 			}
 			return;
 		}
@@ -161,9 +155,12 @@ namespace Runner
 				return;
 			}
 
-			foreach (var ice in _iceData)
+			if (target.TargetType == RunnerTargetType.Node)
 			{
-				ice.NodePinged();
+				foreach (var ice in _iceData)
+				{
+					ice.NodePinged();
+				}
 			}
 		}
 

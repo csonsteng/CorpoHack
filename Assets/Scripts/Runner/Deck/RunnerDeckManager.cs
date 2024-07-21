@@ -9,20 +9,8 @@ using static UnityEngine.GraphicsBuffer;
 
 namespace Runner.Deck
 {
-    public class RunnerDeckManager : MonoBehaviour, ISerializable
+    public class RunnerDeckManager : Singleton<RunnerDeckManager>, ISerializable
 	{
-		public static RunnerDeckManager Instance => GetInstance();
-
-		private static RunnerDeckManager GetInstance()
-		{
-			if (_instance == null)
-			{
-				_instance = FindObjectOfType<RunnerDeckManager>();
-			}
-			return _instance;
-		}
-		private static RunnerDeckManager _instance;
-
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
@@ -49,6 +37,7 @@ namespace Runner.Deck
 				Debug.Log("no more cards in deck");
 				return false;
 			}
+			Logger.Log($"Drew {card.Name}");
 			Hand.Add(card);
 			return true;
 		}
@@ -57,21 +46,29 @@ namespace Runner.Deck
 		{
 			if (!Hand.Remove(card))
 			{
+				Debug.LogError($"cannot play {card.Name}. (Not in hand)");
 				return;
 			}
 			Trash.Add(card);    // add to trash before play so GC can collect itself
 			card.Play(target, this);
+
+			Logger.Log($"Played {card.Name} on {target.TargetType}");
 			AutofillHand();
 		}
 
-		public void Discard(RunnerCardData card)
+		public void Discard(RunnerCardData card, bool autoReplace = true)
 		{
 			if (!Hand.Remove(card))
 			{
+				Debug.LogError($"cannot discard {card.Name}. (Not in hand)");
 				return;
 			}
 			Trash.Add(card);
-			AutofillHand();
+			Logger.Log($"Discarded {card.Name}");
+			if (autoReplace)
+			{
+				AutofillHand();
+			}
 		}
 
 		public RunnerCardData RandomCard()
@@ -82,7 +79,7 @@ namespace Runner.Deck
 			return currentHand[0];
 		}
 
-		private void AutofillHand()
+		public void AutofillHand()
 		{
 			while (Hand.GetAll().Count < _handSize && DrawCard())
 			{
@@ -95,6 +92,7 @@ namespace Runner.Deck
 			Deck.AddToBottom(Trash.GetAll());
 			Trash.Clear();
 			Deck.Shuffle();
+			Logger.Log($"Shuffle trash into deck");
 		}
 
 		public void ShuffleHandIntoDeck()
@@ -102,6 +100,7 @@ namespace Runner.Deck
 			Deck.AddToBottom(Hand.GetAll());
 			Hand.Clear();
 			Deck.Shuffle();
+			Logger.Log($"Shuffle hand into deck");
 		}
 
 		public void ShuffleAll()
