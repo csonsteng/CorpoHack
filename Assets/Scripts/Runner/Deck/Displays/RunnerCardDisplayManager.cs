@@ -13,11 +13,12 @@ namespace Runner
 	{
 		[SerializeField] private RunnerDeckManager _cardManager;
 		[SerializeField] private RunnerHandDisplay _handDisplay;
+		[SerializeField] private RunnerDeckDisplay _deckDisplay;
+		[SerializeField] private RunnerTrashDisplay _trashDisplay;
 		[SerializeField] private RunnerTargetManager _targetManager;
 
 		[SerializeField] private GameObject _discardCardButton;
 
-		[SerializeField] private Transform _trashLocation;
 		[SerializeField] private Transform _deckLocation;
 
 		private RunnerHand _handData;
@@ -26,8 +27,16 @@ namespace Runner
 		{
 			_handData = _cardManager.Hand;
 			_handDisplay.Setup(_handData, _deckLocation, this);
+			_deckDisplay.Setup(_cardManager.Deck, this);
+			_trashDisplay.Setup(_cardManager.Trash, _deckDisplay.transform.position);
 			_targetManager.Register(this);
 			_discardCardButton.SetActive(false);
+		}
+
+		public void OnCardDrawn(RunnerCardDisplay card)
+		{
+			Debug.Log($"adding {card.Data.Name} to hand");
+			_handDisplay.OnCardAdded(card);
 		}
 
 		public void OnCardSelected(RunnerCardDisplay card)
@@ -45,8 +54,14 @@ namespace Runner
 		{
 			_targetManager.OnCardDeselected();
 			_cardManager.Discard(_handDisplay.ProcessingCard.Data);
-			_handDisplay.AnimateCardToTrash(_trashLocation.position);
+			AnimateCardToTrash();
 			_discardCardButton.SetActive(false);
+		}
+
+		private void AnimateCardToTrash()
+		{
+			var card = _handDisplay.RemoveProcessingCard();
+			_trashDisplay.AddCard(card);
 		}
 
 
@@ -54,7 +69,7 @@ namespace Runner
 		public void OnTargetSelected(RunnerTargetData target)
 		{
 			_cardManager.PlayCard(_handDisplay.ProcessingCard.Data, target);
-			_handDisplay.AnimateCardToTrash(_trashLocation.position);
+			AnimateCardToTrash();
 			_discardCardButton.SetActive(false);
 		}
 
@@ -67,7 +82,7 @@ namespace Runner
 			}
 
 			_cardManager.PlayCard(card, target);
-			_handDisplay.AnimateCardToTrash(_trashLocation.position);
+			AnimateCardToTrash();
 		}
 	}
 }

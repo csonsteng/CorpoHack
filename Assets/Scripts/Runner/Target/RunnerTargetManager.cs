@@ -202,6 +202,7 @@ namespace Runner
 		public void OnPlayButton()
 		{
 			_cardManager.OnTargetSelected(_targetlessTarget);
+			_playCardNoTargetButton.SetActive(false);
 		}
 
 		public void OnCardDragged(RunnerCardData card)

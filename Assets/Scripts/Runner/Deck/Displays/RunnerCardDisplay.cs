@@ -48,11 +48,15 @@ namespace Runner
 		}
 		public void Setup(RunnerCardData card, Vector3 position)
 		{
+			transform.position = position;
+			Setup(card);
+		}
+		public void Setup(RunnerCardData card)
+		{
 			_data = card;
 			_cardImage.sprite = card.Sprite;
 			_name.text = card.Name;
 			_description.text = card.Description;
-			transform.position = position;
 			TurnFaceDown(0f);
 
 			//_cardBacking.sprite = deckConfiguration.Backing;
@@ -84,17 +88,33 @@ namespace Runner
 		{
 			_handController = controller;
 		}
+		public void DeRegister()
+		{
+			_handController = null;
+		}
 		private void OnMouseEnter()
 		{
+			if(_handController == null)
+			{
+				return;
+			}
 			_handController.CardHovered(this);
 		}
 		private void OnMouseExit()
 		{
+			if (_handController == null)
+			{
+				return;
+			}
 			_handController.CardUnhovered(this);
 		}
 
 		private void OnMouseUpAsButton()
 		{
+			if (_handController == null)
+			{
+				return;
+			}
 			if (_handController.CardSelected(this))
 			{
 				_selected = true;
@@ -110,6 +130,10 @@ namespace Runner
 
 		private void OnMouseDown()
 		{
+			if (_handController == null)
+			{
+				return;
+			}
 			var screenPosition = Camera.main.WorldToScreenPoint(transform.position);
 			_mouseOffset = screenPosition - Input.mousePosition;
 			_dragStartPosition = transform.position;
@@ -118,11 +142,19 @@ namespace Runner
 
 		private void OnMouseDrag()
 		{
+			if (_handController == null)
+			{
+				return;
+			}
 			transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + _mouseOffset);
 		}
 
 		private void OnMouseUp()
 		{
+			if (_handController == null)
+			{
+				return;
+			}
 			_handController.CardDropped(this);
 		}
 

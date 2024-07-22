@@ -13,6 +13,7 @@ namespace Runner
     public class RunnerHandDisplay : MonoBehaviour
 	{
 		[SerializeField] private RunnerCardDisplay _cardTemplate;
+		[SerializeField] private Transform _cardHolder;
 
 		[SerializeField] protected Vector2 _cardScaleSize;
 		[SerializeField] protected float _animationDuration = 0.1f;
@@ -45,7 +46,7 @@ namespace Runner
 			_data = hand;
 			_manager = manager;
 			_drawPoint = drawPoint.position;
-			_data.RegisterListeners(OnCardAdded, OnCardRemoved);
+			//_data.RegisterListeners(OnCardAdded, OnCardRemoved);
 			_cards.Clear();
 		}
 
@@ -55,10 +56,19 @@ namespace Runner
 			card.TurnFaceUp(_animationDuration);
 			Resize();
 		}
+		public void OnCardAdded(RunnerCardDisplay card)
+		{
+			card.transform.SetParent(_cardHolder);
+			card.Register(this);
+			_cards.Add(card);
+			card.TurnFaceUp(_animationDuration);
+			Resize();
+		}
 
 		private void OnCardRemoved(RunnerCardData card)
 		{
 			// logic should probably happen here rather than called AnimateToTrash
+			
 		}
 
 		public void UnableToPlayCard()
@@ -67,18 +77,21 @@ namespace Runner
 			_processingCard = null;
 		}
 
-		public void AnimateCardToTrash(Vector3 trashLocation)
+		public RunnerCardDisplay RemoveProcessingCard()
 		{
-			_processingCard.MovePosition(trashLocation, _animationDuration);
-			_processingCard.RotateInPlane(0f, _animationDuration);
-			_processingCard.TurnFaceDown(_animationDuration);
-			_cards.Remove(_processingCard);
+			var card = _processingCard;
+			if (card != null)
+			{
+				card.DeRegister();
+				card.UnSelect();
+				_cards.Remove(_processingCard);
+			}
 			_processingCard = null;
 			_hovered = null;
 			Resize();
+			return card;
+
 		}
-
-
 
 		private RunnerCardDisplay SpawnCard(RunnerCardData cardData)
 		{
