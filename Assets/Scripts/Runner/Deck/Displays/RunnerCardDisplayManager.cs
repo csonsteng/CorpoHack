@@ -11,7 +11,6 @@ namespace Runner
 {
 	public class RunnerCardDisplayManager : MonoBehaviour
 	{
-		[SerializeField] private RunnerDeckManager _cardManager;
 		[SerializeField] private RunnerHandDisplay _handDisplay;
 		[SerializeField] private RunnerDeckDisplay _deckDisplay;
 		[SerializeField] private RunnerTrashDisplay _trashDisplay;
@@ -21,16 +20,22 @@ namespace Runner
 
 		[SerializeField] private Transform _deckLocation;
 
+		private RunnerDeckManager _cardManager;
 		private RunnerHand _handData;
 
 		private void Awake()
 		{
+			_cardManager = RunnerDeckManager.Instance;
 			_handData = _cardManager.Hand;
 			_handDisplay.Setup(_handData, _deckLocation, this);
 			_deckDisplay.Setup(_cardManager.Deck, this);
 			_trashDisplay.Setup(_cardManager.Trash, _deckDisplay.transform.position);
 			_targetManager.Register(this);
 			_discardCardButton.SetActive(false);
+		}
+		private void Start()
+		{
+			_cardManager.StartGame();
 		}
 
 		public void OnCardDrawn(RunnerCardDisplay card)

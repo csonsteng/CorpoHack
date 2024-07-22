@@ -1,25 +1,13 @@
 using DG.Tweening;
-using LogicPuddle.CardManagement;
 using Runner.Deck;
-using Runner.Deck.Effects;
-using Runner.Target;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runner
 {
-    public class RunnerCardDisplay : MonoBehaviour
+    public class RunnerCardDisplay : BaseRunnerCardDisplay
 	{
-		[SerializeField] private Image _cardImage;
-
-		[SerializeField] private Image _cardFrame;
-		[SerializeField] private Image _cardBacking;
-		[SerializeField] private TextMeshProUGUI _name;
-		[SerializeField] private TextMeshProUGUI _description;
-
 		[SerializeField] private GameObject _selectedIndicator;
 
 		private Vector3 _baseSize;
@@ -32,7 +20,6 @@ namespace Runner
 		private Vector3 _dragStartPosition;
 
 		private RunnerHandDisplay _handController;
-		private RunnerCardData _data;
 		public float BaseWidth => _baseSize.x;
 		public float CardThickness => _baseSize.z;
 		public RunnerCardData Data => _data;
@@ -51,17 +38,11 @@ namespace Runner
 			transform.position = position;
 			Setup(card);
 		}
-		public void Setup(RunnerCardData card)
+		public override void Setup(RunnerCardData card)
 		{
-			_data = card;
-			_cardImage.sprite = card.Sprite;
-			_name.text = card.Name;
-			_description.text = card.Description;
+			base.Setup(card);
 			TurnFaceDown(0f);
 
-			//_cardBacking.sprite = deckConfiguration.Backing;
-
-			// todo : card frame based on rarity?
 			_selectedIndicator.SetActive(false);
 
 		}

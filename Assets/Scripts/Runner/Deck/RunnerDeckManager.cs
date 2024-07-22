@@ -11,6 +11,7 @@ namespace Runner.Deck
 {
     public class RunnerDeckManager : Singleton<RunnerDeckManager>, ISerializable
 	{
+		// todo: need to store unlocked cards separately from deck
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
@@ -18,9 +19,16 @@ namespace Runner.Deck
 		[SerializeField] private RunnerStartingDeck _startingDeck;
 		[SerializeField] private int _handSize;
 
-		private void Start()
+		private void Awake()
 		{
 			Deck.UnlockCards(_startingDeck.Cards);
+			DontDestroyOnLoad(this);
+		}
+
+		public void StartGame()
+		{
+			Trash.Clear();
+			Hand.Clear();
 			Deck.Reset();
 			for (var i = 0; i < _handSize; i++)
 			{

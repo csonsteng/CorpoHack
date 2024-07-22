@@ -227,9 +227,8 @@ GameObject:
   m_Component:
   - component: {fileID: 62614141}
   - component: {fileID: 62614140}
-  - component: {fileID: 62614142}
   m_Layer: 0
-  m_Name: CardManager
+  m_Name: CardDisplayManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97261b5d8eb7f0e4d91fede1f7a23a26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cardManager: {fileID: 62614142}
   _handDisplay: {fileID: 463087432}
   _deckDisplay: {fileID: 1564782065}
   _trashDisplay: {fileID: 373985493}
@@ -272,20 +270,6 @@ Transform:
   - {fileID: 463087433}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 34.62, y: 0, z: 0}
---- !u!114 &62614142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 62614139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b8b05302cf555549833a0d38f181cf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startingDeck: {fileID: 11400000, guid: e3a174a3b84420842be19fbbed02d2ff, type: 2}
-  _handSize: 4
 --- !u!1 &106338665
 GameObject:
   m_ObjectHideFlags: 0
@@ -9364,6 +9348,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &1818228092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1818228094}
+  - component: {fileID: 1818228093}
+  m_Layer: 0
+  m_Name: DeckManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1818228093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818228092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b8b05302cf555549833a0d38f181cf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _startingDeck: {fileID: 11400000, guid: e3a174a3b84420842be19fbbed02d2ff, type: 2}
+  _handSize: 4
+--- !u!4 &1818228094
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818228092}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.954836, y: 3.2968569, z: -30.79754}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1842449457
 GameObject:
   m_ObjectHideFlags: 0
@@ -15415,3 +15445,4 @@ SceneRoots:
   - {fileID: 373985492}
   - {fileID: 1564782066}
   - {fileID: 1143069563}
+  - {fileID: 1818228094}

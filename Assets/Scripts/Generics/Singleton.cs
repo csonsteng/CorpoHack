@@ -18,4 +18,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 
 	private static T _instance;
 
+	private void OnDestroy()
+	{
+		if (_instance != null)
+		{
+			_instance = null;
+		}
+	}
 }
