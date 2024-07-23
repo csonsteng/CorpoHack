@@ -4,52 +4,62 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class DeckManagementManager : MonoBehaviour
+public class DeckManagementController : MonoBehaviour
 {
 	[SerializeField] private DeckManagementCard _template;
 	[SerializeField] private TextMeshProUGUI _countDisplay;
+	[SerializeField] private Button _playButton;
+	[SerializeField] private RunnerStartingDeck _startingDeck;
 
 	private Dictionary<RunnerCardData, DeckManagementCard> _cards = new Dictionary<RunnerCardData, DeckManagementCard>();
 
 	private RunnerDeck _deck;
-	private int _count;
 
 	private void Start()
 	{
 		_template.gameObject.SetActive(false);
+		RunnerDeckManager.Instance.UnlockCards(_startingDeck.Cards);
 		_deck = RunnerDeckManager.Instance.Deck;
-		_count = 0;
-		foreach (var cardData in _deck.AllCards)
+		foreach (var cardData in RunnerDeckManager.Instance.UnlockedCards.Cards)
 		{
-			if(_cards.TryGetValue(cardData, out var display))
-			{
-				display.AddCopy();
-				continue;
-			}
 			var cardDisplay = Instantiate(_template, _template.transform.parent);
 			cardDisplay.gameObject.SetActive(true);
 			cardDisplay.Setup(cardData, this);
-			_count++;
 			_cards.Add(cardData, cardDisplay);
 		}
-		UpdateCountDisplay();
+		foreach (var cardData in _startingDeck.Cards)
+		{
+			if (_cards.TryGetValue(cardData, out var displayCard))
+			{
+				displayCard.AddCopy();
+			}
+		}
 	}
 
 	public void OnCardAdded(RunnerCardData cardData)
 	{
-		_count++;
+		_deck.AddCardToStartingDeck(cardData);
 		UpdateCountDisplay();
 	}
 	public void OnCardRemoved(RunnerCardData cardData)
 	{
-		_count--;
+		_deck.RemoveCardFromStartingDeck(cardData);
 		UpdateCountDisplay();
+	}
+
+	public void Play()
+	{
+		SceneManager.LoadScene("Main");
 	}
 
 	private void UpdateCountDisplay()
 	{
-		_countDisplay.text = $"Cards {_count}/15";
-		_countDisplay.color = _count > 15 ? Color.red : Color.green;
+		var count = _deck.TotalCount;
+		_countDisplay.text = $"Cards {count}/15";
+		_countDisplay.color = count > 15 ? Color.red : Color.green;
+		_playButton.interactable = count <= 15;
 	}
 }

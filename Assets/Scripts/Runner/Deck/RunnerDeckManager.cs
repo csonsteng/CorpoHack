@@ -15,13 +15,12 @@ namespace Runner.Deck
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
+		public RunnerUnlockedCardsList UnlockedCards = new();
 
-		[SerializeField] private RunnerStartingDeck _startingDeck;
 		[SerializeField] private int _handSize;
 
 		private void Awake()
 		{
-			Deck.UnlockCards(_startingDeck.Cards);
 			DontDestroyOnLoad(this);
 		}
 
@@ -35,6 +34,9 @@ namespace Runner.Deck
 				DrawCard();
 			}
 		}
+
+		public void UnlockCard(RunnerCardData card) => UnlockedCards.UnlockCard(card);
+		public void UnlockCards(IEnumerable<RunnerCardData> cards) => UnlockedCards.UnlockCards(cards);
 
 
 		public bool DrawCard()
@@ -125,11 +127,6 @@ namespace Runner.Deck
 			Deck.Reset();
 			Trash.Clear();
 			Hand.Clear();
-		}
-
-		public void UnlockCard(RunnerCardData card)
-		{
-			Deck.UnlockCard(card);
 		}
 
 		public Dictionary<string, object> Serialize()

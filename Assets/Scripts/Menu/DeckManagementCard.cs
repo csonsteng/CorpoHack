@@ -15,14 +15,14 @@ public class DeckManagementCard : MonoBehaviour
 
     private RunnerCardData _data;
     private int _copyCount;
-    private DeckManagementManager _manager;
+    private DeckManagementController _manager;
 
-	public void Setup(RunnerCardData data, DeckManagementManager manager)
+	public void Setup(RunnerCardData data, DeckManagementController manager)
     {
         _data = data;
         _manager = manager;
         _cardDisplay.Setup(data);
-        _copyCount = 1;
+        _copyCount = 0;
         UpdateCountDisplay();
 	}
 

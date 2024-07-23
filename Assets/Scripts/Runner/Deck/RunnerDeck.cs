@@ -36,8 +36,8 @@ namespace Runner.Deck
 		public void AddToBottom(RunnerCardData card) => _currentCards.AddToBottom(card);
 		public void AddToTop(List<RunnerCardData> cards) => _currentCards.AddToTop(cards);
 		public void AddToBottom(List<RunnerCardData> cards) => _currentCards.AddToBottom(cards);
-		public void UnlockCard(RunnerCardData card) => _startingCards.AddToBottom(card);
-		public void UnlockCards(List<RunnerCardData> cards) => _startingCards.AddToBottom(cards);
+		public void AddCardToStartingDeck(RunnerCardData card) => _startingCards.AddToBottom(card);
+		public void RemoveCardFromStartingDeck(RunnerCardData card) => _startingCards.RemoveCard(card);
 		public void Shuffle()
 		{
 			_currentCards.Shuffle();
