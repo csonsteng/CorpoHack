@@ -11,15 +11,17 @@ namespace Runner.Deck
 {
     public class RunnerDeckManager : Singleton<RunnerDeckManager>, ISerializable
 	{
+		public RunnerRig Rig = new();
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
 		public RunnerUnlockedCardsList UnlockedCards = new();
 
-		[SerializeField] private int _handSize;
+		[SerializeField] private RunnerRigDefaultConfiguration _defaultRig;
 
 		private void Awake()
 		{
+			Rig.Setup(_defaultRig);
 			DontDestroyOnLoad(this);
 		}
 
@@ -28,11 +30,13 @@ namespace Runner.Deck
 			Trash.Clear();
 			Hand.Clear();
 			Deck.Reset();
-			for (var i = 0; i < _handSize; i++)
+			for (var i = 0; i < HandSize; i++)
 			{
 				DrawCard();
 			}
 		}
+
+		public int HandSize => Rig.GetEffectiveHandSize(Deck);
 
 		public void UnlockCard(RunnerCardData card) => UnlockedCards.UnlockCard(card);
 		public void UnlockCards(IEnumerable<RunnerCardData> cards) => UnlockedCards.UnlockCards(cards);
@@ -90,7 +94,7 @@ namespace Runner.Deck
 
 		public void AutofillHand()
 		{
-			while (Hand.GetAll().Count < _handSize && DrawCard())
+			while (Hand.GetAll().Count < HandSize && DrawCard())
 			{
 				// fill back up to handsize
 			}

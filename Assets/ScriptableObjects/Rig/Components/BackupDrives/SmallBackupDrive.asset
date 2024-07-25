@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6eb4a0034a547148b14a53212252049, type: 3}
+  m_Name: SmallBackupDrive
+  m_EditorClassIdentifier: 
+  _uniqueID: SmallBackupDrive
+  Name: Small Backup Drive
+  Cost: 3
+  Description: This a small backup drive.
+  DeckSizeContribution: 2

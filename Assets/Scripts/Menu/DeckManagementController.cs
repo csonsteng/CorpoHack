@@ -58,8 +58,18 @@ public class DeckManagementController : MonoBehaviour
 	private void UpdateCountDisplay()
 	{
 		var count = _deck.TotalCount;
-		_countDisplay.text = $"Cards {count}/15";
-		_countDisplay.color = count > 15 ? Color.red : Color.green;
-		_playButton.interactable = count <= 15;
+		var maxSize = RunnerDeckManager.Instance.Rig.GetMaxDeckSize();
+		var handSize = RunnerDeckManager.Instance.HandSize;
+		_countDisplay.text = $"Cards {count}/{maxSize} (Hand Size: {handSize})";
+		var color = Color.green;
+		if (handSize <= 0)
+		{
+			color = Color.red;
+		} else if (count > maxSize)
+		{
+			color = Color.yellow;
+		}
+		_countDisplay.color = color;
+		_playButton.interactable = handSize >= 1;
 	}
 }
