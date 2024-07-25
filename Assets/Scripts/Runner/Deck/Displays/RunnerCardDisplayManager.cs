@@ -26,6 +26,7 @@ namespace Runner
 		private void Awake()
 		{
 			_cardManager = RunnerDeckManager.Instance;
+			_cardManager.Register(ForceDiscardCard);
 			_handData = _cardManager.Hand;
 			_handDisplay.Setup(_handData, _deckLocation, this);
 			_deckDisplay.Setup(_cardManager.Deck, this);
@@ -40,7 +41,6 @@ namespace Runner
 
 		public void OnCardDrawn(RunnerCardDisplay card)
 		{
-			Debug.Log($"adding {card.Data.Name} to hand");
 			_handDisplay.OnCardAdded(card);
 		}
 
@@ -55,12 +55,20 @@ namespace Runner
 			_targetManager.OnCardDeselected();
 		}
 
-		public void Discard()
+		public void DiscardProcessingCard()
 		{
 			_targetManager.OnCardDeselected();
 			_cardManager.Discard(_handDisplay.ProcessingCard.Data);
 			AnimateCardToTrash();
 			_discardCardButton.SetActive(false);
+		}
+		public void ForceDiscardCard(RunnerCardData data)
+		{
+			_cardManager.Discard(data, false);
+			if (_handDisplay.TryRemoveCard(data, out var card))
+			{
+				_trashDisplay.AddCard(card);
+			}
 		}
 
 		private void AnimateCardToTrash()

@@ -16,9 +16,8 @@ namespace Runner.Target
 			var currentHand = RunnerDeckManager.Instance.Hand.GetAll();
 			foreach ( var card in currentHand.ToArray())
 			{
-				RunnerDeckManager.Instance.Discard(card, false);
+				RunnerDeckManager.Instance.ForceDiscard(card);
 			}
-			RunnerDeckManager.Instance.AutofillHand();
 		}
 	}
 }

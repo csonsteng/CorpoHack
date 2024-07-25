@@ -77,6 +77,39 @@ namespace Runner
 			_processingCard = null;
 		}
 
+		private bool TryGetCardDisplay(RunnerCardData cardData,bool ignoreProcessingCard, out RunnerCardDisplay cardDisplay)
+		{
+			foreach (var card in _cards)
+			{
+				if(card == _processingCard)
+				{
+					continue;
+				}
+				if (card.Data == cardData)
+				{
+					cardDisplay = card;
+					return true;
+				}
+			}
+			cardDisplay = null;
+			return false;
+		}
+
+		public bool TryRemoveCard(RunnerCardData cardData, out RunnerCardDisplay card)
+		{
+			if (!TryGetCardDisplay(cardData, true, out card))
+			{
+				return false;
+			}
+			if (card != null)
+			{
+				card.DeRegister();
+				card.UnSelect();
+				_cards.Remove(card);
+			}
+			return true;
+		}
+
 		public RunnerCardDisplay RemoveProcessingCard()
 		{
 			var card = _processingCard;

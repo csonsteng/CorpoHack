@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LogicPuddle.Common;
 using static UnityEngine.GraphicsBuffer;
+using System;
 
 namespace Runner.Deck
 {
@@ -19,10 +20,21 @@ namespace Runner.Deck
 
 		[SerializeField] private RunnerRigDefaultConfiguration _defaultRig;
 
+		private Action<RunnerCardData> _onForceDiscard;
+
 		private void Awake()
 		{
 			Rig.Setup(_defaultRig);
 			DontDestroyOnLoad(this);
+		}
+
+		public void Register(Action<RunnerCardData> onForceDiscard)
+		{
+			_onForceDiscard = onForceDiscard;
+		}
+		public void ForceDiscard(RunnerCardData card)
+		{
+			_onForceDiscard?.Invoke(card);
 		}
 
 		public void StartGame()

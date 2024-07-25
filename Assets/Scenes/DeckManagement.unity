@@ -3863,6 +3863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _container: {fileID: 15968765}
   _moreInfoScreen: {fileID: 286935591}
+  _disable: 1
 --- !u!1 &2065594659
 GameObject:
   m_ObjectHideFlags: 0

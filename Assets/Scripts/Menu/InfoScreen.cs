@@ -6,10 +6,11 @@ public class InfoScreen : MonoBehaviour
 {
     [SerializeField] private GameObject _container;
 	[SerializeField] private GameObject _moreInfoScreen;
+	[SerializeField] private bool _disable;
 
 	private void Awake()
 	{
-		_container.SetActive(true);
+		_container.SetActive(!_disable);
 		_moreInfoScreen.SetActive(false);
 	}
 	public void Close()
