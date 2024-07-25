@@ -11,7 +11,6 @@ namespace Runner.Deck
 {
     public class RunnerDeckManager : Singleton<RunnerDeckManager>, ISerializable
 	{
-		// todo: need to store unlocked cards separately from deck
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
