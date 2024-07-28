@@ -90,12 +90,12 @@ public class DesktopWindow : MonoBehaviour, IPointerClickHandler
 
 	private void OnDragStart()
 	{
-		_mouseOffset = Input.mousePosition - transform.position;
+		_mouseOffset = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
 		SetAsActive(true);
 	}
 
 	private void OnDrag()
 	{
-		transform.position = Input.mousePosition - _mouseOffset;
+		transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mouseOffset);
 	}
 }

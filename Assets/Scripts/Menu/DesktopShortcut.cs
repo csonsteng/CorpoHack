@@ -20,13 +20,13 @@ public class DesktopShortcut : MonoBehaviour, IPointerDownHandler, IPointerUpHan
 	{
 		if (_dragging)
 		{
-			transform.position = Input.mousePosition - _mouseOffset;
+			transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition - _mouseOffset);
 		}
 	}
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		_dragging = true; 
-		_mouseOffset = Input.mousePosition - transform.position;
+		_mouseOffset = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
 		transform.SetAsLastSibling();
 	}
 
