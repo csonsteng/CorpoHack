@@ -11,7 +11,6 @@ public class DeckManagementController : MonoBehaviour
 {
 	[SerializeField] private DeckManagementCard _template;
 	[SerializeField] private TextMeshProUGUI _countDisplay;
-	[SerializeField] private Button _playButton;
 	[SerializeField] private RunnerStartingDeck _startingDeck;
 
 	private Dictionary<RunnerCardData, DeckManagementCard> _cards = new Dictionary<RunnerCardData, DeckManagementCard>();
@@ -60,16 +59,6 @@ public class DeckManagementController : MonoBehaviour
 		var count = _deck.TotalCount;
 		var maxSize = RunnerDeckManager.Instance.Rig.GetMaxDeckSize();
 		var handSize = RunnerDeckManager.Instance.HandSize;
-		_countDisplay.text = $"Cards {count}/{maxSize} (Hand Size: {handSize})";
-		var color = Color.green;
-		if (handSize <= 0)
-		{
-			color = Color.red;
-		} else if (count > maxSize)
-		{
-			color = Color.yellow;
-		}
-		_countDisplay.color = color;
-		_playButton.interactable = handSize >= 1;
+		_countDisplay.text = $"Programs {count}/{maxSize} (Hand Size: {handSize})";
 	}
 }

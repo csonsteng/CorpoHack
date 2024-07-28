@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/DeckManagement.unity
-    guid: 89f147d1b3412d442b2d0073bc7d48e6
+    path: Assets/Scenes/Interface.unity
+    guid: b6c730e12ab936a46b7018758f8e6db3
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
