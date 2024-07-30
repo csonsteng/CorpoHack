@@ -9,7 +9,7 @@ using UnityEngine;
 namespace Runner.Deck
 {
     [CreateAssetMenu(menuName = "Runner/Card Data")]
-    public class RunnerCardData: UniqueScriptableObject
+    public class RunnerCardData: UniqueScriptableObject, IShopItem
 	{
 		public string Name;
 		public string Description;
@@ -18,6 +18,9 @@ namespace Runner.Deck
 		public RunnerCardRarity Rarity;
 
 		public List<AbstractRunnerCardEffect> Effects;
+
+
+		public string ItemName() => Name;
 
 		public void Play(RunnerTargetData target, RunnerDeckManager manager)
 		{

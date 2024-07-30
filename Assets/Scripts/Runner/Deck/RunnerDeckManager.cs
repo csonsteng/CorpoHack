@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LogicPuddle.Common;
-using static UnityEngine.GraphicsBuffer;
 using System;
 
 namespace Runner.Deck
@@ -13,6 +12,7 @@ namespace Runner.Deck
     public class RunnerDeckManager : Singleton<RunnerDeckManager>, ISerializable
 	{
 		public RunnerRig Rig = new();
+		public SpareRigParts SpareParts = new();
 		public RunnerDeck Deck = new();
 		public RunnerHand Hand = new();
 		public RunnerTrash Trash = new();
