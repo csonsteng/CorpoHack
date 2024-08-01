@@ -14,4 +14,8 @@ public class RunnerRigMotherboard : RunnerRigComponent
 	public override string ComponentType => "Motherboard";
 	public override string ComponentDescription => "Your rig requires exactly one motherboard. " +
 		"Different motherboards can support different tiers of processors and have a differing number of available slots.";
+
+
+	public override string Effect() => $"[Not Implemented] Has {RAMSlots} RAM slots, {DriveSlots} drive slots, " +
+		$"{InterfaceSlots}, interface slots, and supports a {MaximumProcessorTier} tier processor.";
 }

@@ -11,6 +11,29 @@ public class SpareRigParts
 	private readonly List<AbstractRunnerRigDrive> _drives = new List<AbstractRunnerRigDrive>();
 	private readonly List<AbstractRunnerRigInterfaceComponent> _interfaces = new List<AbstractRunnerRigInterfaceComponent>();
 
+	public void AddSparePart(RunnerRigComponent part)
+	{
+		if (part is RunnerRigMotherboard motherboard)
+		{
+			_motherboards.Add(motherboard);
+		} else if (part is RunnerRigProcessor processor)
+		{
+			_processors.Add(processor);
+		} else if (part is RunnerRigCooling cooling)
+		{
+			_cooling.Add(cooling);
+		} else if (part is RunnerRigRAM ram)
+		{
+			_ram.Add(ram);
+		} else if (part is AbstractRunnerRigDrive drive)
+		{
+			_drives.Add(drive);
+		} else if (part is AbstractRunnerRigInterfaceComponent interfaceComponent)
+		{
+			_interfaces.Add(interfaceComponent);
+		}
+	}
+
 	public IEnumerable<T> GetAllSpareParts<T>() where T: RunnerRigComponent
 	{
 		if (typeof(T) == typeof(RunnerRigMotherboard))

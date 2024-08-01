@@ -21,6 +21,25 @@ namespace Runner.Deck
 
 
 		public string ItemName() => Name;
+		public string Effect() => Description;
+		public string Type() => "Program";
+		public int GetCost()
+		{
+			return Rarity switch
+			{
+				RunnerCardRarity.OpenSource => 1,
+				RunnerCardRarity.Commercial => 3,
+				RunnerCardRarity.Enterprise => 5,
+				RunnerCardRarity.BlackMarket => 10,
+				_ => 0,
+			};
+		}
+
+		public void Buy()
+		{
+			RunnerDeckManager.Instance.UnlockCard(this);
+			RunnerDeckManager.Instance.Deck.AddCardToStartingDeck(this);
+		}
 
 		public void Play(RunnerTargetData target, RunnerDeckManager manager)
 		{

@@ -1,19 +1,35 @@
+using Runner.Deck;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BasicShop : MonoBehaviour
 {
     [SerializeField] private BasicShopItem _itemTemplate;
     [SerializeField] private BascisShopList _inventory;
 
-    private Dictionary<ShopCategory, List<IShopItem>> _categorizedItems = new Dictionary<ShopCategory, List<IShopItem>>();
+
+	[SerializeField] private GameObject _detailsDisplay;
+	[SerializeField] private TextMeshProUGUI _selectedTitle;
+	[SerializeField] private TextMeshProUGUI _selectedType;
+	[SerializeField] private TextMeshProUGUI _selectedCost;
+	[SerializeField] private TextMeshProUGUI _selectedDescription;
+	[SerializeField] private Button _buyButton;
+
+	private Dictionary<ShopCategory, List<IShopItem>> _categorizedItems = new Dictionary<ShopCategory, List<IShopItem>>();
 
 	private List<GameObject> _spawnedItems = new List<GameObject>();
+
+	private IShopItem _selected;
 
 	private void Awake()
 	{
 		_itemTemplate.gameObject.SetActive(false);
+		_detailsDisplay.SetActive(false);
+		RunnerDeckManager.Instance.CryptoChanged += OnCryptoChanged;
 	}
 
 	private void Start()
@@ -88,8 +104,44 @@ public class BasicShop : MonoBehaviour
 			_spawnedItems.Add(itemDisplay.gameObject);
 			itemDisplay.Setup(item, i =>
 			{
-				Debug.Log(i.ItemName());
+				Select(i);
 			});
+		}
+	}
+
+	private void Select(IShopItem item)
+	{
+		_selected = item;
+		_selectedTitle.text = item.ItemName();
+		_selectedCost.text = item.GetCost().ToString();
+		_selectedDescription.text = item.Effect();
+		_selectedType.text = item.Type();
+
+
+		_buyButton.interactable = RunnerDeckManager.Instance.Crypto > item.GetCost();
+		_detailsDisplay.SetActive(true);
+	}
+
+	private void OnCryptoChanged(int amount)
+	{
+		if (_selected == null)
+		{
+			return;
+		}
+		_buyButton.interactable = RunnerDeckManager.Instance.Crypto > _selected.GetCost();
+	}
+
+	private void OnDestroy()
+	{
+		RunnerDeckManager.Instance.CryptoChanged -= OnCryptoChanged;
+	}
+
+	public void Buy()
+	{
+		if (RunnerDeckManager.Instance.SpendCrypto(_selected.GetCost()))
+		{
+			_selected.Buy();
+			Debug.Log($"Buying {_selected.ItemName()}");
 		}
 	}
 }

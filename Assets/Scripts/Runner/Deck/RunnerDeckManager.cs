@@ -22,6 +22,10 @@ namespace Runner.Deck
 
 		private Action<RunnerCardData> _onForceDiscard;
 
+		public Action<int> CryptoChanged;
+
+		public int Crypto { get; private set; } = 10;
+
 		private void Awake()
 		{
 			Rig.Setup(_defaultRig);
@@ -35,6 +39,23 @@ namespace Runner.Deck
 		public void ForceDiscard(RunnerCardData card)
 		{
 			_onForceDiscard?.Invoke(card);
+		}
+
+		public bool SpendCrypto (int amount)
+		{
+			if (Crypto < amount)
+			{
+				return false;
+			}
+			Crypto -= amount;
+			CryptoChanged?.Invoke(Crypto);
+			return true;
+		}
+
+		public void AddCrypto (int amount)
+		{
+			Crypto += amount;
+			CryptoChanged?.Invoke(Crypto);
 		}
 
 		public void StartGame()

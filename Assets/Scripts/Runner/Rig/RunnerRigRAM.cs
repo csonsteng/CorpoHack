@@ -9,4 +9,5 @@ public class RunnerRigRAM : RunnerRigComponent
 
 	public override string ComponentType => "RAM";
 	public override string ComponentDescription => "RAM increases your maximum hand size. It takes up a RAM slot.";
+	public override string Effect() => $"Increases hand size by {HandSizeContribution}.";
 }

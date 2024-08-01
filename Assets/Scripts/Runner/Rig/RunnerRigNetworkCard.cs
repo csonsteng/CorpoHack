@@ -8,4 +8,6 @@ public class RunnerRigNetworkCard : AbstractRunnerRigInterfaceComponent
     public int IncreasedDetectionThreshold;
 	public override string ComponentType => "Network Card";
 	public override string ComponentDescription => "A network card raises the detection threshold before you get ejected from a system. It takes up an interface slot.";
+
+	public override string Effect() => $"[Not Implemented] Raises detection threshold by {IncreasedDetectionThreshold}.";
 }
